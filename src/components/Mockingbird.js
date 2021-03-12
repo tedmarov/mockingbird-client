@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react"
 import { Route, Redirect } from "react-router-dom"
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import "./Mockingbird.css"
 // import { ApplicationViews } from "./ApplicationViews.js"
 // import { NavBar } from "./navbar/NavBar.js"
 // import { Login } from "./auth/Login.js"
 // import { Register } from "./auth/Register.js"
 // import { ProfileProvider } from './auth/AuthProvider.js'
-import "./Mockingbird.css"
 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export const Mockingbird = () => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     
     useEffect(() => {
-        console.log(transcript)
     }, [transcript])
+
+    console.log(`${transcript}`)
 
     // Sets the state of the empty values for a Voice
     const [voice, setVoice] = useState({})
@@ -39,7 +40,10 @@ export const Mockingbird = () => {
     }
 
 return (
-    <div className="voiceContainer">
+    <div className="container">
+        <div>
+            {transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+        </div>
 
         <fieldset>
             <div className="d-flex justify-content-center speech-recog">
@@ -59,7 +63,7 @@ return (
         <fieldset>
             <div className="form-group">
                 <label htmlFor="birdie_voice">Birdie Voice: </label>
-                {/* {transcript} */}
+                
             </div>
         </fieldset>
 
