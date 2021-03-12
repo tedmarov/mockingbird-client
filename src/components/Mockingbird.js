@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Route, Redirect } from "react-router-dom"
 // import { ApplicationViews } from "./ApplicationViews.js"
 // import { NavBar } from "./navbar/NavBar.js"
@@ -8,10 +8,14 @@ import { Route, Redirect } from "react-router-dom"
 import "./Mockingbird.css"
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export const Mockingbird = (props) => {
+export const Mockingbird = () => {
     const { transcript, resetTranscript } = useSpeechRecognition()
+    
+    useEffect(() => {
+        console.log(transcript)
+    }, [transcript])
 
     // Sets the state of the empty values for a Voice
     const [voice, setVoice] = useState({})
@@ -22,8 +26,8 @@ export const Mockingbird = (props) => {
     }
 
     // Function that passes the start-recording onClick to enable continuous recording.
-    const beginVoiceRecording = () => {
-        return SpeechRecognition.beginVoiceRecording({ continuous: true })
+    const startListening = () => {
+        return SpeechRecognition.startListening({ continuous: true })
     }
 
 
@@ -39,22 +43,25 @@ return (
 
         <fieldset>
             <div className="d-flex justify-content-center speech-recog">
-                <FontAwesomeIcon className="start-recording" onClick={beginVoiceRecording} icon={faMicrophoneAlt} />
-                <FontAwesomeIcon className="stop-recording" onClick={SpeechRecognition.stopListening} icon={faStopCircle} />
-                <FontAwesomeIcon className="reset-recording" onClick={resetTranscript} icon={faRedo} />
+                <button className="start-recording" onClick={startListening}>
+                    Start Recording
+                </button>
+
+                <button className="stop-recording" onClick={SpeechRecognition.stopListening}>
+                    Stop Recording
+                </button>
+
+                <button className="reset-recording" onClick={resetTranscript} >
+                    Reset Recording
+                </button>
             </div>
         </fieldset>    
         <fieldset>
             <div className="form-group">
                 <label htmlFor="birdie_voice">Birdie Voice: </label>
-                <textarea type="text" name="birdie_voice" rows="15" required autoFocus className="form-control"
-                    placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
-                    defaultValue={voice.birdie_voice || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
-                    onChange={handleControlledInputChange}
-                    />
+                {/* {transcript} */}
             </div>
         </fieldset>
-
 
     </div>
 
