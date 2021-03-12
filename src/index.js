@@ -7,7 +7,10 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Mockingbird />
+
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

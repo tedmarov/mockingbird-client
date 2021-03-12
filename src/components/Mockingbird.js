@@ -1,7 +1,7 @@
 import React from "react"
 import { Route, Redirect } from "react-router-dom"
-import { ApplicationViews } from "./ApplicationViews.js"
-import { NavBar } from "./navbar/NavBar.js"
+// import { ApplicationViews } from "./ApplicationViews.js"
+// import { NavBar } from "./navbar/NavBar.js"
 // import { Login } from "./auth/Login.js"
 // import { Register } from "./auth/Register.js"
 // import { ProfileProvider } from './auth/AuthProvider.js'
@@ -36,6 +36,6 @@ export const Mockingbird = (props) => {
         SpeechSynthesisVoice(newVoice)
     }
 
-    
+
 
 }
