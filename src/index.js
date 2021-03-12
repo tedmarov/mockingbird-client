@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from "react-router-dom";
-import { Mockingbird } from "./components/Mockingbird.js"
+import { Mockingbird } from "./components/Mockingbird.js";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -9,7 +9,6 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Mockingbird />
-
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
