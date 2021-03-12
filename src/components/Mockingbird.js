@@ -57,6 +57,6 @@ return (
 
 
     </div>
-    console.log(voice)
+
 )
 }
