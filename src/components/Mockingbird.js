@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react"
 import { Route, Redirect } from "react-router-dom"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import "./Mockingbird.css"
+
+// Want to import User, Auth components here.
+
 // import { ApplicationViews } from "./ApplicationViews.js"
 // import { NavBar } from "./navbar/NavBar.js"
 // import { Login } from "./auth/Login.js"
