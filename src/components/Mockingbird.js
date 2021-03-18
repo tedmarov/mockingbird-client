@@ -23,7 +23,20 @@ export const Mockingbird = () => (
             }
         }} />
 
-        <Route path="/login" render={props => <Login {...props} />} />
-        <Route path="/register" render={props => <Register {...props} />} />
+        <Route path="/login" render={(props) => {
+            if (localStorage.getItem("birdie")) {
+                return <Redirect to="/" />
+            } else {
+                return <Login {...props} />
+            }
+        }} />
+
+        <Route path="/register" render={(props) => {
+            if (localStorage.getItem("birdie")) {
+                return <Redirect to="/" />
+            } else {
+                return <Register history={props.history} />
+            }
+        }} />
     </>
 )
