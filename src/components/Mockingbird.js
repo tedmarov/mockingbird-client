@@ -1,9 +1,9 @@
 import React from "react"
 import { Route, Redirect } from "react-router-dom"
 import { ApplicationViews } from "./ApplicationViews"
-import { NavBar } from "./nav/NavBar"
-import { Login } from "./auth/Login"
-import { Register } from "./auth/Register"
+import { NavBar } from "./nav/NavBar.js"
+import { Login } from "./auth/Login.js"
+import { Register } from "./auth/Register.js"
 import "./Mockingbird.css"
 
 // Need a login screen/register screen CS
