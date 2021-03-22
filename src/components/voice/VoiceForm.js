@@ -1,24 +1,21 @@
 // Should be used to capture simple things; Get it to work with React JS
-// Have something that proves whichever NPM trying to use
 // Get this piece working first
 // Use this form as a landing spot for the first incarnation of Mockingbird
+// Form first, then store the voice, then have a separate onClick/Submit event for the voice
 
 import React, { useEffect, useState } from "react"
 import { Route, Redirect } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import "./Mockingbird.css"
+import { VoiceContext } from "./VoiceProvider.js"
+import { CategoryContext } from "../category/CategoryProvider.js"
 
 // Want to import User, Auth components here.
-
-// import { ApplicationViews } from "./ApplicationViews.js"
-// import { NavBar } from "./navbar/NavBar.js"
-// import { Login } from "./auth/Login.js"
-// import { Register } from "./auth/Register.js"
 // import { ProfileProvider } from './auth/AuthProvider.js'
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export const Mockingbird = () => {
+export const VoiceForm = (props) => {
+    []
     const { transcript, resetTranscript } = useSpeechRecognition()
     
     useEffect(() => {
