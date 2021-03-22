@@ -95,7 +95,11 @@ export const VoiceForm = (props) => {
         } else {
             if (editMode) {
                 updateVoice({
-                    
+                    voice_name: voice.voice_name,
+                    date_created: voice.date_created,
+                    creator: voice.creator,
+                    categoryId: categoryId,
+                    voice_text: voice.voice_text
                 })
             }
         }
