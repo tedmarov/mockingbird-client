@@ -6,7 +6,8 @@ import { BirdieVoiceContext } from "../BirdieVoiceProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
-//When accessing user stuff, use extra dot?? (ex: birdie.user)
+// When accessing user stuff, use extra dot?? (ex: birdie.user)
+// Create a button to Create New Voice for user to go to New Voice Form
 
 export const Dashboard = (props) => {
     const { birdies, getBirdies } = useContext(BirdieContext)
