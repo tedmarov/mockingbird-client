@@ -26,7 +26,7 @@ export const BirdieProvider = (props) => {
     */
     return (
         <BirdieContext.Provider value={{
-            Birdies, getBirdies
+            birdies, getBirdies
         }}>
             {props.children}
         </BirdieContext.Provider>
