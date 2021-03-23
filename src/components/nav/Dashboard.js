@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
-import { VoiceContext } from "../events/VoiceProvider.js"
-import { BirdieVoiceContext } from "../BirdieVoiceProvider.js"
+import { VoiceContext } from "../voice/VoiceProvider.js"
+// import { BirdieVoiceContext } from "../BirdieVoiceProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
@@ -19,7 +19,7 @@ export const Dashboard = (props) => {
     const [team, setTeam] = useState([])
     const [birdieVoice] = useState([])
 
-    const birdieId = parseInt(localStorage.getItem("game_player"))
+    const birdieId = parseInt(localStorage.getItem("birdie"))
 
     /*
         What's the effect this is reponding to? Component was

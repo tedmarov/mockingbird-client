@@ -4,7 +4,7 @@ import React, { useState } from "react"
     The context is imported and used by individual components
     that need data
 */
-export const categoryContext = React.createContext()
+export const CategoryContext = React.createContext()
 
 /*
  This component establishes what data can be used.

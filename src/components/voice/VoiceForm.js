@@ -76,7 +76,7 @@ export const VoiceForm = (props) => {
 
     useEffect(() => {
         getVoiceInEditMode()
-    }, [voices]
+    }, [voices])
 
 
     const constructNewVoice = () => {
@@ -89,14 +89,27 @@ export const VoiceForm = (props) => {
                 updateVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
-                    creator: voice.creator,
                     categoryId: categoryId,
-                    voice_text: voice.voice_text
+                    voice_text: voice.voice_text,
+                    voice_edited: voice.voice_edited
                 })
+                    .then(() => props.history.push("/voices"))
+            } else {
+                addVoice({
+                    voice_name: voice.voice_name,
+                    date_created: voice.date_created,
+                    creator: +(localStorage.getItem("birdie")),
+                    categoryId: categoryId,
+                    voice_text: voice.voice_text,
+                    voice_edited: voice.voice_edited
+                })
+                .then(() => props.history.push("/voices"))
+            }
             }
         }
-    }
+    
 return (
+
     <div className="container">
         <div>
             {transcript.charAt(0).toUpperCase() + transcript.slice(1)}
