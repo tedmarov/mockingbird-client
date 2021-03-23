@@ -19,15 +19,17 @@ export const VoiceForm = (props) => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     
     // Component state
+    // Sets the state of the empty values for a Voice
     const [voice, setVoice] = useState(
         {
             categoryId: "0"
         }
-    )
-
+        )
+        
     // Something of a URL parameter
     const editMode = props.match.params.hasOwnProperty("voiceId")
-
+        
+    // Object.assign creates a copy; e.target.value modifies a copy
     const handleControlledInputChange = (e) => {
         /*
             When changing a state object or array, always create a new one
@@ -61,8 +63,6 @@ export const VoiceForm = (props) => {
         }
     }
 
-    // Sets the state of the empty values for a Voice
-    const [voice, setVoice] = useState({})
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -72,14 +72,6 @@ export const VoiceForm = (props) => {
     // Function that passes the start-recording onClick to enable continuous recording.
     const startListening = () => {
         return SpeechRecognition.startListening({ continuous: true })
-    }
-
-
-    // Object.assign creates a copy; e.target.value modifies a copy
-    const handleControlledInputChange = (e) => {
-        const newVoice = Object.assign({}, voice)
-        newVoice[e.target.name] = e.target.value
-        setVoice(newVoice)
     }
 
     useEffect(() => {
