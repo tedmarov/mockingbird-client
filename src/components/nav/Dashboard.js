@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
-import { BirdieVoiceContext } from "../birdie/BirdieVoiceProvider.js"
+import { BirdieVoicesContext } from "../birdie/BirdieVoicesProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
@@ -12,12 +12,10 @@ import "./NavBar.css"
 export const Dashboard = (props) => {
     const { birdies, getBirdies } = useContext(BirdieContext)
     const { voices, getVoices } = useContext(VoiceContext)
-    const { birdieVoicesExpanded, getBirdieVoices, getBirdieVoicesExpanded } = useContext(BirdieVoiceContext)
+    const { birdieVoices, getBirdieVoices, birdieVoicesExpanded, getBirdieVoicesExpanded } = useContext(BirdieVoicesContext)
 
     const [birdie, setBirdie] = useState([])
     const [voice, setVoice] = useState([])
-    const [team, setTeam] = useState([])
-    const [birdieVoice] = useState([])
 
     const birdieId = parseInt(localStorage.getItem("birdie"))
 
@@ -35,7 +33,7 @@ export const Dashboard = (props) => {
     }, [])
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === birdieVoice.voiceId)
+        const voice = voices.find(v => v.id === birdieVoices.voiceId)
         setVoice(voice)
     }, [voices])
 
@@ -73,7 +71,7 @@ export const Dashboard = (props) => {
                                     to={{
                                         pathname: `/voices/${voice.voice.id}`
                                     }} >
-                                    <h4>{voice.voice.voiceName} recorded on {Voice.voice.voiceDateAndTime}</h4>
+                                    <h4>{voice.voice.voiceName} recorded on {voice.voice.voiceDateAndTime}</h4>
                                 </Link>
                             </div>
                     })}

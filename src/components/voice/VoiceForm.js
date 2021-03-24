@@ -140,7 +140,7 @@ return (
                         value={voice.categoryId}
                         onChange={handleControlledInputChange}>
                         <option value="0">Select type</option>
-                        {category.map(t => (
+                        {categories.map(c => (
                             <option key={c.id} value={c.id} >
                                 {c.category_label}
                             </option>
@@ -169,7 +169,7 @@ return (
             {editMode && <fieldset>
                 <button
                     onClick={() => {
-                        deleteVoice(Voice.id)
+                        deleteVoice(voice.id)
                             .then(() => {
                                 props.history.push("/Voices")
                             })
