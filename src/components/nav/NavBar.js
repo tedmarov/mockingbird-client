@@ -15,7 +15,7 @@ export const NavBar = () => {
                 <Link className="navbar__link" to="/">Dashboard</Link>
             </li>
             <li className="navbar__item">
-                <Link className="navbar__link" to={{pathname: "/posts"}}>All Voices</Link>
+                <Link className="navbar__link" to={{pathname: "/voices"}}>All Voices</Link>
             </li>
             <li className="navbar__item">
                 <Link className="navbar__link" to="/categories">Categories</Link>

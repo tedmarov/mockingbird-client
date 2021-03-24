@@ -4,35 +4,35 @@ import React, { useState } from "react"
     The context is imported and used by individual components
     that need data
 */
-export const BirdieContext = React.createContext()
+export const UserContext = React.createContext()
 
 /*
  This component establishes what data can be used.
  */
-export const BirdieProvider = (props) => {
-    const [birdies, setBirdies] = useState([])
+export const UserProvider = (props) => {
+    const [users, setUsers] = useState([])
 
-    const getBirdies = () => {
-        return fetch("http://localhost:8000/birdies", {
+    const getUsers = () => {
+        return fetch("http://localhost:8000/users", {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
         .then(r => r.json())
-        .then(setBirdies)
+        .then(setUsers)
     }
 
     /*
         You return a context provider which has the
-        `Birdies` state, the `addBirdie` function,
-        and the `getBirdie` function as keys. This
+        `Users` state, the `addUser` function,
+        and the `getUser` function as keys. This
         allows any child elements to access them.
     */
     return (
-        <BirdieContext.Provider value={{
-            birdies, getBirdies
+        <UserContext.Provider value={{
+            users, getUsers
         }}>
             {props.children}
-        </BirdieContext.Provider>
+        </UserContext.Provider>
     )
 }

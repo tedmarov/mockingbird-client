@@ -20,7 +20,7 @@ export const BirdieVoicesProvider = (props) => {
     }
 
     const addBirdieVoice = (birdieId, voiceId) => {
-        return fetch("http://localhost:8088/birdieVoices", {
+        return fetch("http://localhost:8000/birdieVoices", {
             method: "Post",
             headers: {
                 "Content-Type": "application/json"
@@ -35,7 +35,7 @@ export const BirdieVoicesProvider = (props) => {
     }
 
     const getBirdieVoicesExpanded = () => {
-        return fetch(`http://localhost:8088/birdieVoices?_expand=birdie&_expand=voice`)
+        return fetch(`http://localhost:8000/birdieVoices?_expand=birdie&_expand=voice`)
             .then(res => res.json())
             .then(setBirdieVoicesExpanded)
     }

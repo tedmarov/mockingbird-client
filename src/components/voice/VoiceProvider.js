@@ -13,13 +13,13 @@ export const VoiceProvider = (props) => {
     const [voices, setVoices] = useState([])
 
     const getVoices = () => {
-        return fetch("http://localhost:8088/voices")
+        return fetch("http://localhost:8000/voices")
             .then(res => res.json())
             .then(setVoices)
     }
 
     const addVoice = voice => {
-        return fetch("http://localhost:8088/voices", {
+        return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -30,7 +30,7 @@ export const VoiceProvider = (props) => {
     }
 
     const updateVoice = voice => {
-        return fetch(`http://localhost:8088/voices/${voice.id}`, {
+        return fetch(`http://localhost:8000/voices/${voice.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export const VoiceProvider = (props) => {
     }
 
     const deleteVoice = voiceId => {
-        return fetch(`http://localhost:8088/dVoices/${voiceId}`, {
+        return fetch(`http://localhost:8000/dVoices/${voiceId}`, {
             method: "DELETE",
         })
             .then(getVoices)

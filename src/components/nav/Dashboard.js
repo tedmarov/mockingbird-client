@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { UserContext } from "../birdie/UserProvider.js"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
 import { BirdieVoicesContext } from "../birdie/BirdieVoicesProvider.js"
@@ -13,7 +14,9 @@ export const Dashboard = (props) => {
     const { birdies, getBirdies } = useContext(BirdieContext)
     const { voices, getVoices } = useContext(VoiceContext)
     const { birdieVoices, getBirdieVoices, birdieVoicesExpanded, getBirdieVoicesExpanded } = useContext(BirdieVoicesContext)
+    const { users, getUsers } = useContext(UserContext)
 
+    const [user, setUser] = useState([])
     const [birdie, setBirdie] = useState([])
     const [voice, setVoice] = useState([])
 
@@ -38,9 +41,9 @@ export const Dashboard = (props) => {
     }, [voices])
 
     useEffect(() => {
-        const birdie = birdies.find(b => b.id === birdieId) || {}
-        setBirdie(birdie)
-    }, [birdies])
+        const user = users.find(b => b.id === birdieId) || {}
+        setUser(user)
+    }, [users])
 
     return (
         <main className="dashboard">
