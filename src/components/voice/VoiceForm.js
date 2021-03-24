@@ -22,7 +22,7 @@ export const VoiceForm = (props) => {
     
     useEffect(() => {
         getVoices()
-        getTypes()
+        getCategories()
     }, [])
     
     useEffect(() => {
@@ -32,7 +32,9 @@ export const VoiceForm = (props) => {
     // Component state
     // Sets the state of the empty values for a Voice
     const [voice, setVoice] = useState({
-        categoryId: "0"
+        date_created: "",
+        categoryId: 0,
+        voice_text: ""
     })
     
     // If browser doesn't support speech recognition, return null
@@ -113,76 +115,52 @@ return (
                     <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="categoryId"> Select Game Type </label>
+                    <label htmlFor="voice_name">Voice Name: </label>
+                    <input type="text" name="voice_name"
+                        required autoFocus
+                        className="form-control"
+                        placeholder="Voice Name"
+                        value={voice.voice_name}
+                        onChange={handleControlledInputChange} />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="date_created">Voice Date and Time: </label>
+                    <input type="date" name="date_created"
+                        required autoFocus
+                        className="form-control"
+                        placeholder="Date Voice Created"
+                        value={voice.date_created}
+                        onChange={handleControlledInputChange} />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="categoryId"> Select Category </label>
                     <select name="categoryId" className="form-control"
                         prototype="int"
                         required
                         value={voice.categoryId}
                         onChange={handleControlledInputChange}>
                         <option value="0">Select type</option>
-                        {types.map(t => (
-                            <option key={t.id} value={t.id} >
-                                {t.category}
+                        {category.map(t => (
+                            <option key={c.id} value={c.id} >
+                                {c.category_label}
                             </option>
                         ))}
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="gameId"> Select Game </label>
-                    <select name="gameId"
-                        className="form-control"
-                        prototype="int"
-                        required
-                        value={Voice.gameId}
-                        onChange={handleControlledInputChange}>
-                        <option value="0">Select game</option>
-                        {games.map(g => (
-                            <option key={g.id} value={g.id} >
-                                {g.title}
-                            </option>
-                        ))}
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="VoiceName">Voice name: </label>
-                    <input type="text" name="VoiceName"
-                        required autoFocus
-                        className="form-control"
-                        placeholder="Voice name"
-                        value={Voice.VoiceName}
-                        onChange={handleControlledInputChange} />
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="VoiceLoc">Voice location: </label>
-                    <input type="text" name="VoiceLoc"
+                    <label htmlFor="voice_text">Voice Text: </label>
+                    <input type="text" name="voice_text"
                         required autoFocus
                         className="form-control"
                         placeholder="Location name"
-                        value={Voice.VoiceLoc}
+                        value={voice.voice_text}
                         onChange={handleControlledInputChange} />
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="VoiceDateAndTime">Voice Date and Time: </label>
-                    <input type="text" name="VoiceDateAndTime"
-                        required autoFocus
-                        className="form-control"
-                        placeholder="Voice date and time"
-                        value={Voice.VoiceDateAndTime}
-                        onChange={handleControlledInputChange} />
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="details"> Short Description </label>
-                    <textarea type="text" rows="3" cols="20"
-                        name="details"
-                        placeholder="Enter description"
-                        value={Voice.details}
-                        required onChange={handleControlledInputChange} />
                 </fieldset>
             </form>
             <fieldset>
                 <button type="submit"
                     onClick={evt => {
-                        evt.prVoiceDefault() // PrVoice browser from submitting the form
+                        evt.preventDefault() // Prevent browser from submitting the form
                         constructNewVoice()
                     }}>
                     {editMode ? "Update Voice" : "Create Voice"}
