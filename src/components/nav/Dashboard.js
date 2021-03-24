@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
-// import { BirdieVoiceContext } from "../BirdieVoiceProvider.js"
+import { BirdieVoiceContext } from "../birdie/BirdieVoiceProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
