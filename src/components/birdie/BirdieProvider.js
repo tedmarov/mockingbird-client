@@ -13,9 +13,13 @@ export const BirdieProvider = (props) => {
     const [birdies, setBirdies] = useState([])
 
     const getBirdies = () => {
-        return fetch("http://localhost:8000/birdies")
-            .then(res => res.json())
-            .then(setBirdies)
+        return fetch("http://localhost:8000/birdies", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
+            }
+        })
+        .then(res => res.json())
+        .then(setBirdies)
     }
 
     /*

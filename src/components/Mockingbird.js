@@ -4,20 +4,18 @@ import { ApplicationViews } from "./ApplicationViews"
 import { NavBar } from "./nav/NavBar.js"
 import { Login } from "./auth/Login.js"
 import { Register } from "./auth/Register.js"
-import "./Mockingbird.css"
 
 // Need a login screen/register screen CS
 
 export const Mockingbird = () => (
     <>
+
         <Route render={() => {
             if (localStorage.getItem("birdie")) {
-                return (
-                    <>
-                        <Route render={props => <NavBar {...props} />} />
-                        <Route render={props => <ApplicationViews {...props} />} />
+                return <>
+                        <Route render={NavBar} />
+                        <Route render={props => <ApplicationViews {...props} /> } />
                     </>
-                )
             } else {
                 return <Redirect to="/login" />
             }

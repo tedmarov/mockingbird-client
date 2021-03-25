@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { UserContext } from "../birdie/UserProvider.js"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
-import { VoiceContext } from "../events/VoiceProvider.js"
-import { BirdieVoiceContext } from "../BirdieVoiceProvider.js"
+import { VoiceContext } from "../voice/VoiceProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
@@ -12,14 +12,13 @@ import "./NavBar.css"
 export const Dashboard = (props) => {
     const { birdies, getBirdies } = useContext(BirdieContext)
     const { voices, getVoices } = useContext(VoiceContext)
-    const { birdieVoicesExpanded, getBirdieVoices, getBirdieVoicesExpanded } = useContext(BirdieVoiceContext)
+    const { users, getUsers } = useContext(UserContext)
 
+    const [user, setUser] = useState([])
     const [birdie, setBirdie] = useState([])
     const [voice, setVoice] = useState([])
-    const [team, setTeam] = useState([])
-    const [birdieVoice] = useState([])
 
-    const birdieId = parseInt(localStorage.getItem("game_player"))
+    const birdieId = parseInt(localStorage.getItem("birdie"))
 
     /*
         What's the effect this is reponding to? Component was
@@ -29,42 +28,43 @@ export const Dashboard = (props) => {
     useEffect(() => {
         console.log("This is a test")
         getBirdies()
-            .then(getBirdieVoices)
-            .then(getBirdieVoicesExpanded)
             .then(getVoices)
     }, [])
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === birdieVoice.voiceId)
+        const voice = voices.find(v => v.id === user.id)
         setVoice(voice)
-    }, [voices])
+    }, [])
 
     useEffect(() => {
-        const birdie = birdies.find(b => b.id === birdieId) || {}
-        setBirdie(birdie)
-    }, [birdies])
+        const user = users.find(b => b.id === birdieId) || {}
+        setUser(user)
+    }, [users])
 
     return (
         <main className="dashboard">
             <article className="voicesWindow">
-                <h2>Welcome, {birdie.username}.</h2>
-                <button className="viewProfile" onClick={() => props.history.push(`/birdies/${birdie.id}`)}>My Profile</button>
+                <h2>Welcome, {user.username}.</h2>
+                <button className="viewProfile" onClick={() => props.history.push(`/users/${user.id}`)}>My Profile</button>
                 <div className="createdVoices">
                     <h3 className="dash">Voices Created</h3>
                     {voices.map(voice => {
-                        if (voice.authorId === birdieId) {
+
                             return <div className="voiceCard" key={voice.id}>
                                 < Link
                                     to={{
                                         pathname: `/voices/${voice.id}`
                                     }} >
-                                    <h4>{voice.voiceName} created on {voice.voiceDateAndTime}</h4>
+                                    <h4>{voice.voice_name} created on {voice.    date_created}</h4>
                                 </Link>
                             </div>
                         }
-                    })}
+                    )}
+                <button to="/voices/create">
+                    Create a Voice
+                </button>
                 </div>
-                <div>
+                {/* <div>
                     <h3 className="dash">Voices Subscribed</h3>
                     {birdieVoicesExpanded.map(voice => {
                         if (voice.birdieId === birdieId)
@@ -73,11 +73,11 @@ export const Dashboard = (props) => {
                                     to={{
                                         pathname: `/voices/${voice.voice.id}`
                                     }} >
-                                    <h4>{voice.voice.voiceName} recorded on {Voice.voice.voiceDateAndTime}</h4>
+                                    <h4>{voice.voice.voiceName} recorded on {voice.voice.voiceDateAndTime}</h4>
                                 </Link>
                             </div>
                     })}
-                </div>
+                </div> */}
             </article>
         </main>
     )

@@ -3,8 +3,7 @@ import { Link, useHistory } from "react-router-dom"
 import "./NavBar.css"
 import Logo from "./mockingbird_logo.jpg"
 
-export const NavBar = () => {
-    const history = useHistory()
+export const NavBar = (props) => {
 
     return (
         <ul className="navbar">
@@ -15,7 +14,7 @@ export const NavBar = () => {
                 <Link className="navbar__link" to="/">Dashboard</Link>
             </li>
             <li className="navbar__item">
-                <Link className="navbar__link" to={{pathname: "/posts"}}>All Voices</Link>
+                <Link className="navbar__link" to={{pathname: "/voices"}}>All Voices</Link>
             </li>
             <li className="navbar__item">
                 <Link className="navbar__link" to="/categories">Categories</Link>
@@ -28,12 +27,12 @@ export const NavBar = () => {
                 :<></>
             } */}
             {
-                (localStorage.getItem("rare_user_id") !== null) ?
+                (localStorage.getItem("birdie") !== null) ?
                     <li className="nav-item">
                         <button className="nav-link fakeLink"
                             onClick={() => {
-                                localStorage.removeItem("rare_user_id")
-                                history.push({ pathname: "/" })
+                                localStorage.removeItem("birdie")
+                                props.history.push({ pathname: "/" })
                             }}
                         >Logout</button>
                     </li> :

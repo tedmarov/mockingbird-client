@@ -13,13 +13,17 @@ export const VoiceProvider = (props) => {
     const [voices, setVoices] = useState([])
 
     const getVoices = () => {
-        return fetch("http://localhost:8088/voices")
+        return fetch("http://localhost:8000/voices", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
+            }
+        })
             .then(res => res.json())
             .then(setVoices)
     }
 
     const addVoice = voice => {
-        return fetch("http://localhost:8088/voices", {
+        return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -30,7 +34,7 @@ export const VoiceProvider = (props) => {
     }
 
     const updateVoice = voice => {
-        return fetch(`http://localhost:8088/voices/${voice.id}`, {
+        return fetch(`http://localhost:8000/voices/${voice.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +45,7 @@ export const VoiceProvider = (props) => {
     }
 
     const deleteVoice = voiceId => {
-        return fetch(`http://localhost:8088/dVoices/${voiceId}`, {
+        return fetch(`http://localhost:8000/dVoices/${voiceId}`, {
             method: "DELETE",
         })
             .then(getVoices)
@@ -49,7 +53,7 @@ export const VoiceProvider = (props) => {
 
     /*
         You return a context provider which has the
-        `dVoices` state, the `adddVoice` function,
+        `Voices` state, the `adddVoice` function,
         and the `getdVoice` function as keys. This
         allows any child elements to access them.
     */
