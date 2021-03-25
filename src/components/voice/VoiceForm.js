@@ -28,7 +28,7 @@ export const VoiceForm = (props) => {
     
     useEffect(() => {
         getVoiceInEditMode()
-    }, [voices])
+    }, [])
     
     // Component state
     // Sets the state of the empty values for a Voice
@@ -84,7 +84,7 @@ export const VoiceForm = (props) => {
         setChecked(!checked)
         }
 
-    // console.log(`${transcript}`)
+    console.log(`${categories}`)
 
     const constructNewVoice = () => {
         const categoryId = +(voice.categoryId)
@@ -116,7 +116,7 @@ export const VoiceForm = (props) => {
             } else {
                 titleDialog.current.showModal()
             }
-        }
+        }}
     
 return (
 
@@ -162,7 +162,7 @@ return (
                     <select name="categoryId" className="form-control"
                         prototype="int"
                         required
-                        value={voice.categoryId}
+                        value={voice.category_id}
                         onChange={handleControlledInputChange}>
                         <option value="0">Select type</option>
                         {categories.map(c => (
@@ -177,7 +177,7 @@ return (
                     <input type="text" name="voice_text"
                         required autoFocus
                         className="form-control"
-                        placeholder="Location name"
+                        placeholder="Voice Text"
                         value={voice.voice_text}
                         onChange={handleControlledInputChange} />
                 </fieldset>
@@ -214,8 +214,9 @@ return (
     </main>
     
     )
+
 }
-}
+
 
 // <div className="container">
 //     <div>

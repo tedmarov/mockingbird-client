@@ -18,7 +18,7 @@ export const BirdieProvider = (props) => {
                 "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
-        .then(r => r.json())
+        .then(res => res.json())
         .then(setBirdies)
     }
 

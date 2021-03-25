@@ -3,8 +3,7 @@ import { Link, useHistory } from "react-router-dom"
 import "./NavBar.css"
 import Logo from "./mockingbird_logo.jpg"
 
-export const NavBar = () => {
-    const history = useHistory()
+export const NavBar = (props) => {
 
     return (
         <ul className="navbar">
@@ -33,7 +32,7 @@ export const NavBar = () => {
                         <button className="nav-link fakeLink"
                             onClick={() => {
                                 localStorage.removeItem("birdie")
-                                history.push({ pathname: "/" })
+                                props.history.push({ pathname: "/" })
                             }}
                         >Logout</button>
                     </li> :

@@ -34,7 +34,7 @@ export const Dashboard = (props) => {
     useEffect(() => {
         const voice = voices.find(v => v.id === user.id)
         setVoice(voice)
-    }, [voices])
+    }, [])
 
     useEffect(() => {
         const user = users.find(b => b.id === birdieId) || {}
@@ -49,17 +49,20 @@ export const Dashboard = (props) => {
                 <div className="createdVoices">
                     <h3 className="dash">Voices Created</h3>
                     {voices.map(voice => {
-                        if (voice.authorId === birdieId) {
+
                             return <div className="voiceCard" key={voice.id}>
                                 < Link
                                     to={{
                                         pathname: `/voices/${voice.id}`
                                     }} >
-                                    <h4>{voice.voiceName} created on {voice.voiceDateAndTime}</h4>
+                                    <h4>{voice.voice_name} created on {voice.    date_created}</h4>
                                 </Link>
                             </div>
                         }
-                    })}
+                    )}
+                <button to="/voices/create">
+                    Create a Voice
+                </button>
                 </div>
                 {/* <div>
                     <h3 className="dash">Voices Subscribed</h3>
