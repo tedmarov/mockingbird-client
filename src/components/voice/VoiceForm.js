@@ -36,7 +36,8 @@ export const VoiceForm = (props) => {
         categoryId: 0,
         voice_text: ""
     })
-    
+    const [checked, setChecked] = useState(false)
+
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
         return null
@@ -62,6 +63,7 @@ export const VoiceForm = (props) => {
             const voiceId = +(props.match.params.voiceId)
             const selectedVoice = voices.find(v => v.id === voiceId) || {}
             setVoice(selectedVoice)
+            setChecked(dreamToEdit.private)
         }
     }   
 
@@ -76,6 +78,11 @@ export const VoiceForm = (props) => {
         setVoice(newVoice)
     }
 
+    // changes the value of the checkbox
+    const checkboxHandler = () => {
+        setChecked(!checked)
+        }
+
     // console.log(`${transcript}`)
 
     const constructNewVoice = () => {
@@ -86,34 +93,51 @@ export const VoiceForm = (props) => {
         } else {
             if (editMode) {
                 updateVoice({
+                    id: voice.id,
                     voice_name: voice.voice_name,
-                    categoryId: categoryId,
+                    categoryId: +(categoryId),
                     voice_text: voice.voice_text,
-                    voice_edited: voice.voice_edited
+                    voice_edited: voice.voice_edited,
+                    privacy: checked
                 })
                     .then(() => props.history.push("/voices"))
-            } else {
+            } else if (voice.voice_name) {
                 addVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
                     creator: +(localStorage.getItem("birdie")),
-                    categoryId: categoryId,
+                    categoryId: +(categoryId),
                     voice_text: voice.voice_text,
-                    voice_edited: voice.voice_edited
+                    voice_edited: voice.voice_edited,
+                    privacy: checked
                 })
                 .then(() => props.history.push("/voices"))
-            }
+            } else {
+                titleDialog.current.showModal()
             }
         }
     
 return (
 
     <main className="container--main">
+
+        <dialog className="dialog dialog--password" ref={titleDialog}>
+            <div>Please enter a dream title.</div>
+            <button className="button--close" onClick={e => titleDialog.current.close()}>Close</button>
+        </dialog>
+
         <section>
+            <fieldset>
+                <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
+            </fieldset>
+        {/* Begin Speech Re cognition Section */}
+            <div className="d-flex justify-content-center speech-recog">
+                <FontAwesomeIcon className="start-recording" onClick={startListening} icon={faMicrophoneAlt} />
+                <FontAwesomeIcon className="stop-recording" onClick={SpeechRecognition.stopListening} icon={faStopCircle} />
+                <FontAwesomeIcon className="reset-recording" onClick={resetTranscript} icon={faRedo} />
+            </div>
+        {/* End Speech Recogntion Section */}
             <form className="form--main">
-                <fieldset>
-                    <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
-                </fieldset>
                 <fieldset>
                     <label htmlFor="voice_name">Voice Name: </label>
                     <input type="text" name="voice_name"
@@ -156,6 +180,12 @@ return (
                         value={voice.voice_text}
                         onChange={handleControlledInputChange} />
                 </fieldset>
+                <div>                
+                    <label>
+                        <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
+                                    Please select if you would like privacy for your voice.
+                    </label>
+                </div>
             </form>
             <fieldset>
                 <button type="submit"
