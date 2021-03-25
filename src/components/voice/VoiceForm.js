@@ -40,7 +40,7 @@ export const VoiceForm = (props) => {
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-        return null
+        return console.log("Please switch to a different browser; this one does not support Speech Recognition.")
     }
     
     // Function that passes the start-recording onClick to enable continuous recording.
@@ -183,28 +183,32 @@ return (
                 <div>                
                     <label>
                         <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
-                                    Please select if you would like privacy for your voice.
+                            Please select if you would like privacy for your voice.
                     </label>
                 </div>
             </form>
-            <fieldset>
-                <button type="submit"
-                    onClick={evt => {
-                        evt.preventDefault() // Prevent browser from submitting the form
-                        constructNewVoice()
-                    }}>
-                    {editMode ? "Update Voice" : "Create Voice"}
-                </button>
-            </fieldset>
-            {editMode && <fieldset>
-                <button
-                    onClick={() => {
-                        deleteVoice(voice.id)
+
+            <div className="text-center">
+                <fieldset>
+                    <button type="submit"
+                        onClick={evt => {
+                            evt.preventDefault() // Prevent browser from submitting the form
+                            constructNewVoice()
+                        }}>
+                        {editMode ? "Update Voice" : "Create Voice"}
+                    </button>
+                </fieldset>
+                {editMode && <fieldset>
+                    <button
+                        onClick={() => {
+                            deleteVoice(voice.id)
                             .then(() => {
-                                props.history.push("/Voices")
+                                props.history.push("/voices")
                             })
-                    }}>Delete Voice</button>
-            </fieldset>}
+                        }}>Delete Voice</button>
+                </fieldset>
+                }
+            </div>
         </section>
     </main>
     
