@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
+import { TextContext } from "../texts/TextProvider.js"
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
 
 // Want to import User, Auth components here.
@@ -17,6 +18,7 @@ import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-s
 export const VoiceForm = (props) => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
+    const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, updateVoice, deleteVoice } = useContext(VoiceContext)
     
     const titleDialog = React.createRef()
@@ -24,6 +26,7 @@ export const VoiceForm = (props) => {
     useEffect(() => {
         getVoices()
         getCategories()
+        getTexts()
     }, [])
     
     useEffect(() => {
@@ -123,7 +126,7 @@ return (
     <main className="container--main">
 
         <dialog className="dialog dialog--password" ref={titleDialog}>
-            <div>Please enter a dream title.</div>
+            <div>Please enter a voice name.</div>
             <button className="button--close" onClick={e => titleDialog.current.close()}>Close</button>
         </dialog>
 
@@ -139,6 +142,16 @@ return (
             </div>
         {/* End Speech Recogntion Section */}
             <form className="form--main">
+                <fieldset>
+                    <div className="form-group">
+                        <label htmlFor="transcript" className="form-control">Recording: </label>
+                        <textarea type="text" name="dream_story" rows="15" required autoFocus className="form-control"
+                            placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
+                            defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+                            onChange={handleControlledInputChange}
+                        />
+                    </div>
+                </fieldset>
                 <fieldset>
                     <label htmlFor="voice_name">Voice Name: </label>
                     <input type="text" name="voice_name"
@@ -164,7 +177,7 @@ return (
                         required
                         value={voice.category_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0">Select type</option>
+                        <option value="0">Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
                                 {c.category_label}
@@ -173,20 +186,29 @@ return (
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="voice_text">Voice Text: </label>
-                    <input type="text" name="voice_text"
-                        required autoFocus
-                        className="form-control"
-                        placeholder="Voice Text"
-                        value={voice.voice_text}
-                        onChange={handleControlledInputChange} />
+                    <label htmlFor="textId"> Voice Title </label>
+                    <select name="textId" className="form-control"
+                        prototype="int"
+                        required
+                        value={voice.text_id}
+                        onChange={handleControlledInputChange}>
+                        <option value="0">Select Title</option>
+                        {texts.map(t => (
+                            <option key={t.id} value={t.id} >
+                                {t.text_title}
+                            </option>
+                        ))}
+                    </select>
                 </fieldset>
-                <div>                
+                <fieldset>
+
+                    <div>                
                     <label>
                         <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
                             Please select if you would like privacy for your voice.
                     </label>
                 </div>
+                </fieldset>
             </form>
 
             <div className="text-center">

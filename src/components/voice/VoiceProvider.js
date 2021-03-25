@@ -26,7 +26,8 @@ export const VoiceProvider = (props) => {
         return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             },
             body: JSON.stringify(voice)
         })
