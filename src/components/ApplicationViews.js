@@ -8,7 +8,7 @@ import { VoiceForm } from "./voice/VoiceForm.js"
 import { VoiceList } from "./voice/VoiceList.js"
 import { VoiceProvider } from "./voice/VoiceProvider.js"
 import { CategoryProvider } from "./category/CategoryProvider.js"
-import { BirdieVoicesProvider } from "./birdie/BirdieVoicesProvider.js"
+// import { BirdieVoicesProvider } from "./birdie/BirdieVoicesProvider.js"
 
 export const ApplicationViews = (props) => {
     return (
@@ -16,26 +16,26 @@ export const ApplicationViews = (props) => {
             <UserProvider>
                 <BirdieProvider>
                     <VoiceProvider>
-                        <BirdieVoicesProvider>
+                        {/* <BirdieVoicesProvider> */}
                             <Route exact path="/" render={
                                 props => <Dashboard {...props} />
                             } />
-                        </BirdieVoicesProvider>
+                        {/* </BirdieVoicesProvider> */}
                     </VoiceProvider>
                 </BirdieProvider>
             </UserProvider>        
             <BirdieProvider>
                 <VoiceProvider>
-                    <BirdieVoicesProvider>
+                    {/* <BirdieVoicesProvider> */}
                         <CategoryProvider>
                             <Route exact path="/voices" render={
                                 props => <VoiceList {...props} />
                             } />
-                            <Route path="/voices/create" rende={
+                            <Route path="/voices/create" render={
                                 props=> <VoiceForm {...props} />
                             } />
                         </CategoryProvider>
-                    </BirdieVoicesProvider>
+                    {/* </BirdieVoicesProvider> */}
                 </VoiceProvider>
             </BirdieProvider>
 

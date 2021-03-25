@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
+import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
 
 // Want to import User, Auth components here.
 // import { ProfileProvider } from './auth/AuthProvider.js'
@@ -63,7 +64,7 @@ export const VoiceForm = (props) => {
             const voiceId = +(props.match.params.voiceId)
             const selectedVoice = voices.find(v => v.id === voiceId) || {}
             setVoice(selectedVoice)
-            setChecked(dreamToEdit.private)
+            setChecked(selectedVoice.private)
         }
     }   
 
@@ -213,6 +214,7 @@ return (
     </main>
     
     )
+}
 }
 
 // <div className="container">

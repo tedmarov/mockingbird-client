@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import { UserContext } from "../birdie/UserProvider.js"
 import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
-import { BirdieVoicesContext } from "../birdie/BirdieVoicesProvider.js"
 import "./NavBar.css"
 
 //Combine user and birdie?? - Heath
@@ -13,7 +12,6 @@ import "./NavBar.css"
 export const Dashboard = (props) => {
     const { birdies, getBirdies } = useContext(BirdieContext)
     const { voices, getVoices } = useContext(VoiceContext)
-    const { birdieVoices, getBirdieVoices, birdieVoicesExpanded, getBirdieVoicesExpanded } = useContext(BirdieVoicesContext)
     const { users, getUsers } = useContext(UserContext)
 
     const [user, setUser] = useState([])
@@ -30,13 +28,11 @@ export const Dashboard = (props) => {
     useEffect(() => {
         console.log("This is a test")
         getBirdies()
-            .then(getBirdieVoices)
-            .then(getBirdieVoicesExpanded)
             .then(getVoices)
     }, [])
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === birdieVoices.voiceId)
+        const voice = voices.find(v => v.id === user.id)
         setVoice(voice)
     }, [voices])
 
@@ -48,8 +44,8 @@ export const Dashboard = (props) => {
     return (
         <main className="dashboard">
             <article className="voicesWindow">
-                <h2>Welcome, {birdie.username}.</h2>
-                <button className="viewProfile" onClick={() => props.history.push(`/birdies/${birdie.id}`)}>My Profile</button>
+                <h2>Welcome, {user.username}.</h2>
+                <button className="viewProfile" onClick={() => props.history.push(`/users/${user.id}`)}>My Profile</button>
                 <div className="createdVoices">
                     <h3 className="dash">Voices Created</h3>
                     {voices.map(voice => {
@@ -65,7 +61,7 @@ export const Dashboard = (props) => {
                         }
                     })}
                 </div>
-                <div>
+                {/* <div>
                     <h3 className="dash">Voices Subscribed</h3>
                     {birdieVoicesExpanded.map(voice => {
                         if (voice.birdieId === birdieId)
@@ -78,7 +74,7 @@ export const Dashboard = (props) => {
                                 </Link>
                             </div>
                     })}
-                </div>
+                </div> */}
             </article>
         </main>
     )
