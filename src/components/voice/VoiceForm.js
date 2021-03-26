@@ -180,7 +180,7 @@ return (
                         <label htmlFor="transcript">Recording: </label>
                         <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
                             placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
-                            value={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+                            defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
                             onChange={handleControlledInputChange}
                         />
                     </div>
@@ -191,7 +191,7 @@ return (
                         required autoFocus
                         className="form-control"
                         placeholder="Voice Name"
-                        value={voice.voice_name}
+                        defaultValue={voice.voice_name}
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
@@ -200,7 +200,7 @@ return (
                         required autoFocus
                         className="form-control"
                         placeholder="Date Voice Created"
-                        value={voice.date_created}
+                        defaultValue={voice.date_created}
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
@@ -208,7 +208,7 @@ return (
                     <select name="categoryId" className="form-control"
                         prototype="int"
                         required
-                        value={voice.category_id}
+                        defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
                         <option value="0">Select Category</option>
                         {categories.map(c => (
@@ -223,7 +223,7 @@ return (
                     <select name="textId" className="form-control"
                         prototype="int"
                         required
-                        value={voice.text_id}
+                        defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
                         <option value="0"> Select Text</option>
                         {texts.map(t => (
@@ -236,7 +236,7 @@ return (
                 <fieldset>
                     <div>                
                     <label>
-                        <input type="checkbox" id="private-checkbox" value={voice.voice_privacy} onChange={handleCheckedInputChange}></input>
+                        <input type="checkbox" id="private-checkbox" defaultValue={voice.voice_privacy} onChange={handleCheckedInputChange}></input>
                             Please select if you would like privacy for your voice.
                     </label>
                 </div>

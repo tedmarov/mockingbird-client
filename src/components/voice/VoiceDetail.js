@@ -63,11 +63,11 @@ export const VoiceDetail = (props) => {
     return (
         <article className="voicesWindow">
             <section className="voiceDetail">
-                <h3>Voice Detail: </h3>
+                <h2>Voice Detail: </h2>
                 <h3>Is it private? {voice.voice_privacy ? "It's private." : "It's public!" }</h3>
-                <h2>{voice.voice_name} recorded on {voice.date_created}</h2>
-                <div>Category: {voices.category.category_label}</div>
-                <div>Text: {voices.text.text_body}</div>
+                <h3>{voice.voice_name} recorded on {voice.date_created}</h3>
+                <h5>Category: {voice.category.category_label}</h5>
+                <div>Text: {voice.text.text_body}</div>
                 <div>Recording: {voice.voice_recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voices.id}`)}></button> : ""}
