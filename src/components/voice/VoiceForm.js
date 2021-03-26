@@ -19,32 +19,53 @@ export const VoiceForm = (props) => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
-    const { voices, addVoice, getVoices, updateVoice, deleteVoice } = useContext(VoiceContext)
-    
-    const titleDialog = React.createRef()
-    
-    useEffect(() => {
-        getVoices()
-        getCategories()
-        getTexts()
-    }, [])
-    
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [])
+    const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
     
     // Component state
     // Sets the state of the empty values for a Voice
     // const [checked, setChecked] = useState(false)
+    const [voice_name, setVoiceName] = useState()
+    const [voice_recording, setVoiceRecording] = useState()
+    const [category, setCategory] = useState()
+
     const [voice, setVoice] = useState({
         voice_name: "",
         date_created: "",
         voice_recording: "",
-        category_id: 0,
-        text_id: 0,
         voice_edited: false,
-        voice_privacy: false
+        voice_privacy: false,
+        category_id: 0,
+        text_id: 0
     })
+
+    const titleDialog = React.createRef()
+    
+    useEffect(() => {
+        if (props.match.params.voiceId) {
+            getVoiceById(props.match.params.VoiceId).then(voice => {
+                setVoice({
+                    voice_name: voice.voice_name,
+                    date_created: voice.date_created,
+                    voice_recording: voice.voice_recording,
+                    voice_edited: false,
+                    voice_privacy: false,
+                    category_id: 0,
+                    text_id: 0
+                })
+            })
+        }
+    }, [props.match.params.eventId])
+
+    useEffect(() => {
+        getCategories()
+        .then(getTexts)
+        .then(getVoices)
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [voices])
+    
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -96,7 +117,7 @@ export const VoiceForm = (props) => {
     //     setChecked(!checked)
     //     }
 
-    console.log(`${categories}`)
+    console.log({categories})
 
     const constructNewVoice = () => {
         const categoryId = parseInt(voice.categoryId)
@@ -192,7 +213,7 @@ return (
                         <option value="0">Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
-                                {c.category_label}
+                                {c.category_label}  
                             </option>
                         ))}
                     </select>
