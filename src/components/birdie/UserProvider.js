@@ -25,7 +25,7 @@ export const UserProvider = (props) => {
     const getUserById = id => {
         return fetch(`http://localhost:8000/users/${id}`, {
             headers: {
-                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
         .then(r => r.json())

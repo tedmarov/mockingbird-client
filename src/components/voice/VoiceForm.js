@@ -35,8 +35,16 @@ export const VoiceForm = (props) => {
     
     // Component state
     // Sets the state of the empty values for a Voice
-    const [voice, setVoice] = useState({})
     // const [checked, setChecked] = useState(false)
+    const [voice, setVoice] = useState({
+        voice_name: "",
+        date_created: "",
+        voice_recording: "",
+        category_id: 0,
+        text_id: 0,
+        voice_edited: false,
+        voice_privacy: false
+    })
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -91,18 +99,20 @@ export const VoiceForm = (props) => {
     console.log(`${categories}`)
 
     const constructNewVoice = () => {
-        const category_id = +(voice.category_id)
-        const text_id = +(voice.text_id)
+        const categoryId = parseInt(voice.categoryId)
+        const textId = parseInt(voice.textId)
 
-        if ( category_id === 0 || text_id === 0 ) {
+        if ( categoryId === 0 || textId === 0 ) {
+
             window.alert("Please select a category.")
         } else {
             if (editMode) {
                 updateVoice({
-                    id: voice.id,
+                    id: props.match.params.voiceId,
                     voice_name: voice.voice_name,
-                    category_id: +(category_id),
-                    text_id: +(text_id),
+                    voice_recording: voice.voice_recording,
+                    category_id: voice.categoryId || voice.category.id,
+                    text_id: voice.textId || voice.text.id,
                     voice_edited: voice.voice_edited,
                     voice_privacy: voice.voice_privacy
                 })
@@ -111,11 +121,11 @@ export const VoiceForm = (props) => {
                 addVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
-                    creator: localStorage.getItem("birdie"),
-                    category_id: +(category_id),
-                    text_id: +(text_id),
+                    voice_recording: voice.voice_recording,
                     voice_edited: voice.voice_edited,
-                    voice_privacy: voice.voice_privacy
+                    voice_privacy: voice.voice_privacy,
+                    category_id: voice.category_id,
+                    text_id: voice.text_id
                 })
                 .then(() => props.history.push("/voices"))
             } else {
