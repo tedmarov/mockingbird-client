@@ -18,20 +18,43 @@ export const CategoryProvider = (props) => {
                 "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
-            .then(res => res.json())
-            .then(setCategories)
+        .then(res => res.json())
+        .then(setCategories);
     }
 
     const addCategory = category => {
         return fetch("http://localhost:8000/categories", {
             method: "POST",
             headers: {
+                "Authorization": `Token ${localStorage.getItem("birdie")}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(category)
         })
             .then(getCategories)
     }
+
+	const deleteCategory = id => {
+		return fetch(`http://localhost:8000/categories/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Authorization": `Token ${localStorage.getItem("birdie")}`
+			}
+		})
+		.then(getCategories)
+	}
+
+	const updateCategory = (category) => {
+		return fetch(`http://localhost:8000/categories/${category.id}`, {
+			method: "PUT",
+			headers: {
+				"Authorization": `Token ${localStorage.getItem("birdie")}`,
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(category)
+		})
+		.then(getCategories)
+	}
 
     /*
         You return a context provider which has the
@@ -41,7 +64,7 @@ export const CategoryProvider = (props) => {
     */
     return (
         <CategoryContext.Provider value={{
-            categories, addCategory, getCategories
+            categories, addCategory, getCategories, deleteCategory, updateCategory
         }}>
             {props.children}
         </CategoryContext.Provider>

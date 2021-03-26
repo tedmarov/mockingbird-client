@@ -18,7 +18,7 @@ export const TextProvider = (props) => {
                 "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
-            .then(res => res.json())
+            .then(r => r.json())
             .then(setTexts)
     }
 

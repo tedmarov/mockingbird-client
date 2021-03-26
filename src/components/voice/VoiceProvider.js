@@ -11,42 +11,69 @@ export const VoiceContext = React.createContext()
  */
 export const VoiceProvider = (props) => {
     const [voices, setVoices] = useState([])
+    const [singleVoice, setSingleVoice] = useState([])
+    const [myVoices, setMyVoices] = useState([])
+
+    const birdie = localStorage.getItem("birdie")
 
     const getVoices = () => {
         return fetch("http://localhost:8000/voices", {
+            method: "GET",
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             }
         })
             .then(res => res.json())
             .then(setVoices)
     }
 
+    const getSingleVoice = (voiceId) => {
+        return fetch(`http://localhost:8000/voices/${voiceId}`,{
+            method: "GET",
+            headers: {
+                "Authorization": `Token ${birdie}`
+            }
+        })
+            .then(res => res.json())
+            .then(setSingleVoice)
+    }
+
+    const getVoicesByUser = (user_id) => {
+        return fetch(`http://localhost:8000/voices?user_id=${user_id}`, {
+            headers: {
+                "Authorization": `Token ${birdie}`
+            }
+        })
+    }
+
     const addVoice = voice => {
         return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${birdie}`
             },
             body: JSON.stringify(voice)
         })
-            .then(getVoices)
     }
 
     const updateVoice = voice => {
         return fetch(`http://localhost:8000/voices/${voice.id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${birdie}`
             },
             body: JSON.stringify(voice)
         })
-            .then(getVoices)
     }
 
     const deleteVoice = voiceId => {
-        return fetch(`http://localhost:8000/dVoices/${voiceId}`, {
+        return fetch(`http://localhost:8000/voices/${voiceId}`, {
             method: "DELETE",
+            headers: {
+                "Authorization": `Token ${birdie}`
+            }
         })
             .then(getVoices)
     }
@@ -59,7 +86,7 @@ export const VoiceProvider = (props) => {
     */
     return (
         <VoiceContext.Provider value={{
-            voices, addVoice, getVoices, updateVoice, deleteVoice
+            voices, addVoice, getVoices, getSingleVoice, getVoicesByUser, updateVoice, deleteVoice
         }}>
             {props.children}
         </VoiceContext.Provider>

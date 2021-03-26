@@ -8,23 +8,28 @@ import { VoiceList } from "./voice/VoiceList.js"
 import { VoiceDetail } from "./voice/VoiceDetail.js"
 import { VoiceProvider } from "./voice/VoiceProvider.js"
 import { CategoryProvider } from "./category/CategoryProvider.js"
-import { TextProvider } from "./texts/TextProvider.js"
+import { CategoryList } from "./category/CategoryList.js"
+import { TextProvider } from "./text/TextProvider.js"
+import { TextList } from "./text/TextList.js"
 
 export const ApplicationViews = () => {
     return (
         <>
-            <UserProvider>
-                <BirdieProvider>
-                    <VoiceProvider>
-                            <Route exact path="/" render={
-                                props => <Dashboard {...props} />
-                            } />
-                    </VoiceProvider>
-                </BirdieProvider>
-            </UserProvider>        
-        <TextProvider>
+        <UserProvider>
             <BirdieProvider>
                 <VoiceProvider>
+                    <CategoryProvider>
+                        <Route exact path="/" render={
+                            props => <Dashboard {...props} />
+                        } />
+                    </CategoryProvider>
+                </VoiceProvider>
+            </BirdieProvider>
+        </UserProvider>        
+        <UserProvider>
+            <TextProvider>
+                <BirdieProvider>
+                    <VoiceProvider>
                         <CategoryProvider>
                             <Route exact path="/voices" render={
                                 props => <VoiceList {...props} />
@@ -39,10 +44,20 @@ export const ApplicationViews = () => {
                                 props => <VoiceForm {...props} />
                             } />                            
                         </CategoryProvider>
-                </VoiceProvider>
-            </BirdieProvider>
-        </TextProvider>    
-
+                    </VoiceProvider>
+                </BirdieProvider>
+            </TextProvider> 
+        </UserProvider>
+        <CategoryProvider>
+                            <Route exact path="/categories" render={
+                                props => <CategoryList {...props} />
+                            } />
+        </CategoryProvider>   
+        <TextProvider>
+                            <Route exact path="/texts" render={
+                                props => <TextList {...props} />
+                            } />
+        </TextProvider>   
         </>
     )
 }

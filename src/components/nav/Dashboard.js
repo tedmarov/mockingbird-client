@@ -1,24 +1,44 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { CategoryContext } from "../category/CategoryProvider.js"
 import { UserContext } from "../birdie/UserProvider.js"
-import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
+import { HumanDate } from "../utils/HumanDate.js"
 import "./NavBar.css"
+// import { BirdieContext } from "../birdie/BirdieProvider.js"
 
 //Combine user and birdie?? - Heath
 // When accessing user stuff, use extra dot?? (ex: birdie.user)
 // Create a button to Create New Voice for user to go to New Voice Form
 
 export const Dashboard = (props) => {
-    const { birdies, getBirdies } = useContext(BirdieContext)
-    const { voices, getVoices } = useContext(VoiceContext)
+    // const { birdies, getBirdies } = useContext(BirdieContext)
     const { users, getUsers } = useContext(UserContext)
+    const { voices, getVoices } = useContext(VoiceContext)
+    const { categories, getCategories } = useContext(CategoryContext)
 
     const [user, setUser] = useState([])
-    const [birdie, setBirdie] = useState([])
     const [voice, setVoice] = useState([])
 
-    const birdieId = parseInt(localStorage.getItem("birdie"))
+    const birdieId = localStorage.getItem("birdie")
+    // console.log(birdieId)
+
+    // Function to help update search filters, if ever implemented
+    // const changeVoices = event => {
+    //     if (event.target.value !== "0") {
+
+    //         const newVoices = []
+    //         voices.forEach(voice => {
+    //             if (+(voice.category.id) === +(event.target.value)) {
+    //                 newVoices.push(voice)
+    //             }
+    //             setFiltered(newVoices)
+    //         })
+    //     }
+    //     else {
+    //         setFiltered(voices)
+    //     }
+    // }
 
     /*
         What's the effect this is reponding to? Component was
@@ -26,41 +46,38 @@ export const Dashboard = (props) => {
         then gets the data, then re-renders.
     */
     useEffect(() => {
-        console.log("This is a test")
-        getBirdies()
+        // console.log("This is a test")
+        getUsers()
             .then(getVoices)
     }, [])
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === user.id)
+        const voice = voices.find(v => v.creator_id === user.id)
         setVoice(voice)
-    }, [])
+    }, [voices])
 
-    useEffect(() => {
-        const user = users.find(b => b.id === birdieId) || {}
-        setUser(user)
-    }, [users])
 
     return (
         <main className="dashboard">
             <article className="voicesWindow">
-                <h2>Welcome, {user.username}.</h2>
-                <button className="viewProfile" onClick={() => props.history.push(`/users/${user.id}`)}>My Profile</button>
-                <div className="createdVoices">
-                    <h3 className="dash">Voices Created</h3>
-                    {voices.map(voice => {
-
-                            return <div className="voiceCard" key={voice.id}>
-                                < Link
-                                    to={{
-                                        pathname: `/voices/${voice.id}`
-                                    }} >
-                                    <h4>{voice.voice_name} created on {voice.    date_created}</h4>
-                                </Link>
-                            </div>
+                <h2>Welcome, {users.first_name} {users.last_name}.</h2>
+                    <div className="createdVoices">
+                        <h3 className="dash">Voices Created</h3>
+                        {voices.map(v => {
+                            console.log(v)
+                            if (v.creator.key === birdieId) {
+                                return <div className="voiceCard" key={v.id}>
+                                    <Link
+                                        to={{
+                                            pathname: `/voices/${v.id}`
+                                        }} >
+                                        <h4>{v.voice_name} created on {v.date_created}</h4>
+                                    </Link>
+                                </div>
+                            }
                         }
                     )}
-                <button to="/voices/create">
+                <button onClick={() => props.history.push("/voices/create")}>
                     Create a Voice
                 </button>
                 </div>
