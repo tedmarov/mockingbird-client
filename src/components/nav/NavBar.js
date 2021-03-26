@@ -5,6 +5,12 @@ import Logo from "./mockingbird_logo.jpg"
 
 export const NavBar = (props) => {
 
+    const handleLogout = (e) => {
+        e.preventDefault()
+        localStorage.clear()
+        props.history.push("/login")
+    }
+
     return (
         <ul className="navbar">
             <li className="navbar__item">
@@ -26,16 +32,10 @@ export const NavBar = (props) => {
                     </li>
                 :<></>
             } */}
-            {
-                (localStorage.getItem("birdie") !== null) ?
-                    <li className="nav-item">
-                        <button className="nav-link fakeLink"
-                            onClick={() => {
-                                localStorage.removeItem("birdie")
-                                props.history.push({ pathname: "/" })
-                            }}
-                        >Logout</button>
-                    </li> :
+            <li className="navbar__item" >
+                <Link className="navbar__link" onClick={(e) => { if (window.confirm('Are you sure you wish to log out?')) { handleLogout(e) } }}>Logout</Link>
+            </li> 
+            {/* :
                     <>
                         <li className="nav-item">
                             <Link className="nav-link" to="/login">Login</Link>
@@ -43,7 +43,7 @@ export const NavBar = (props) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/register">Register</Link>
                         </li>
-                    </>
+                    </> */}
             }        </ul>
     )
 }

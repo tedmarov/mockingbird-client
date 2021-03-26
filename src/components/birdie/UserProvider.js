@@ -22,6 +22,14 @@ export const UserProvider = (props) => {
         .then(setUsers)
     }
 
+    const getUserById = id => {
+        return fetch(`http://localhost:8000/users/${id}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+            }
+        })
+        .then(r => r.json())
+    }
     /*
         You return a context provider which has the
         `Users` state, the `addUser` function,
@@ -30,7 +38,7 @@ export const UserProvider = (props) => {
     */
     return (
         <UserContext.Provider value={{
-            users, getUsers
+            users, getUsers, getUserById
         }}>
             {props.children}
         </UserContext.Provider>

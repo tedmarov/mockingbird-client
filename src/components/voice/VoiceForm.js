@@ -201,7 +201,6 @@ return (
                     </select>
                 </fieldset>
                 <fieldset>
-
                     <div>                
                     <label>
                         <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
@@ -210,7 +209,6 @@ return (
                 </div>
                 </fieldset>
             </form>
-
             <div className="text-center">
                 <fieldset>
                     <button type="submit"

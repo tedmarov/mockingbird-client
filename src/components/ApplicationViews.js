@@ -16,9 +16,11 @@ export const ApplicationViews = () => {
             <UserProvider>
                 <BirdieProvider>
                     <VoiceProvider>
+                        <CategoryProvider>
                             <Route exact path="/" render={
                                 props => <Dashboard {...props} />
                             } />
+                        </CategoryProvider>
                     </VoiceProvider>
                 </BirdieProvider>
             </UserProvider>        

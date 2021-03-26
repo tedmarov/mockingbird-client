@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { CategoryContext } from "../category/CategoryProvider.js"
 import { UserContext } from "../birdie/UserProvider.js"
-import { BirdieContext } from "../birdie/BirdieProvider.js"
 import { VoiceContext } from "../voice/VoiceProvider.js"
 import "./NavBar.css"
+// import { BirdieContext } from "../birdie/BirdieProvider.js"
 
 //Combine user and birdie?? - Heath
 // When accessing user stuff, use extra dot?? (ex: birdie.user)
 // Create a button to Create New Voice for user to go to New Voice Form
 
 export const Dashboard = (props) => {
-    const { birdies, getBirdies } = useContext(BirdieContext)
+    // const { birdies, getBirdies } = useContext(BirdieContext)
     const { voices, getVoices } = useContext(VoiceContext)
+    const { categories, getCategories } = useContext(CategoryContext)
     const { users, getUsers } = useContext(UserContext)
 
     const [user, setUser] = useState([])
@@ -20,6 +22,23 @@ export const Dashboard = (props) => {
 
     const birdieId = parseInt(localStorage.getItem("birdie"))
 
+    // Function to help update search filters, if ever implemented
+    // const changeVoices = event => {
+    //     if (event.target.value !== "0") {
+
+    //         const newVoices = []
+    //         voices.forEach(voice => {
+    //             if (+(voice.category.id) === +(event.target.value)) {
+    //                 newVoices.push(voice)
+    //             }
+    //             setFiltered(newVoices)
+    //         })
+    //     }
+    //     else {
+    //         setFiltered(voices)
+    //     }
+    // }
+
     /*
         What's the effect this is reponding to? Component was
         "mounted" to the DOM. React renders blank HTML first,
@@ -27,8 +46,8 @@ export const Dashboard = (props) => {
     */
     useEffect(() => {
         console.log("This is a test")
-        getBirdies()
-            .then(getVoices)
+        getVoices()
+            .then(getUsers)
     }, [])
 
     useEffect(() => {
@@ -36,16 +55,16 @@ export const Dashboard = (props) => {
         setVoice(voice)
     }, [])
 
-    useEffect(() => {
-        const user = users.find(b => b.id === birdieId) || {}
-        setUser(user)
-    }, [users])
+    // useEffect(() => {
+    //     const user = users.find(b => b.id === birdieId) || {}
+    //     setUser(user)
+    // }, [users])
 
     return (
         <main className="dashboard">
             <article className="voicesWindow">
-                <h2>Welcome, {user.username}.</h2>
-                <button className="viewProfile" onClick={() => props.history.push(`/users/${user.id}`)}>My Profile</button>
+                <h2>Welcome, {users.first_name} {users.last_name}.</h2>
+                <button className="viewProfile" onClick={() => props.history.push(`/users/${users.id}`)}>My Profile</button>
                 <div className="createdVoices">
                     <h3 className="dash">Voices Created</h3>
                     {voices.map(voice => {
@@ -60,7 +79,7 @@ export const Dashboard = (props) => {
                             </div>
                         }
                     )}
-                <button to="/voices/create">
+                <button onClick={() => props.history.push("/voices/create")}>
                     Create a Voice
                 </button>
                 </div>

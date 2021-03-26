@@ -3,13 +3,13 @@ import { Link, useHistory } from "react-router-dom"
 import "./Auth.css"
 
 export const Register = () => {
-    const firstName = useRef()
-    const lastName = useRef()
-    const email = useRef()
-    const bio = useRef()
-    const password = useRef()
-    const verifyPassword = useRef()
-    const passwordDialog = useRef()
+    const firstName = React.createRef()
+    const lastName = React.createRef()
+    const email = React.createRef()
+    const bio = React.createRef()
+    const password = React.createRef()
+    const verifyPassword = React.createRef()
+    const passwordDialog = React.createRef()
     const history = useHistory()
 
     const handleRegister = (e) => {
@@ -78,6 +78,10 @@ export const Register = () => {
                 <fieldset>
                     <label htmlFor="verifyPassword"> Verify Password </label>
                     <input ref={verifyPassword} type="password" name="verifyPassword" className="form-control" placeholder="Verify password" required />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="verifyPassword"> Bio </label>
+                    <textarea ref={bio} name="bio" className="form-control" placeholder="Let other gamers know a little bit about you..." />
                 </fieldset>
                 <fieldset style={{
                     textAlign: "center"
