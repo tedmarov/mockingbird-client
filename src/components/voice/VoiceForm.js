@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
-import { TextContext } from "../texts/TextProvider.js"
+import { TextContext } from "../text/TextProvider.js"
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
 
 // Want to import User, Auth components here.
@@ -188,13 +188,13 @@ return (
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="textId"> Voice Title </label>
+                    <label htmlFor="textId"> Text Title </label>
                     <select name="textId" className="form-control"
                         prototype="int"
                         required
                         value={voice.text_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0">Select Title</option>
+                        <option value="0"> Select Text</option>
                         {texts.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}

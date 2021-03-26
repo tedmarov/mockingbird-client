@@ -20,30 +20,17 @@ export const NavBar = (props) => {
                 <Link className="navbar__link" to="/">Dashboard</Link>
             </li>
             <li className="navbar__item">
-                <Link className="navbar__link" to={{pathname: "/voices"}}>All Voices</Link>
+                <Link className="navbar__link" to= "/voices">All Voices</Link>
             </li>
             <li className="navbar__item">
-                <Link className="navbar__link" to="/categories">Categories</Link>
+                <Link className="navbar__link" to="/categories">All Categories</Link>
             </li>
-            {/* {
-                (localStorage.getItem("admin") === "true")
-                ?   <li className="navbar__item">
-                        <Link className="navbar__link" to="/users">Users</Link>
-                    </li>
-                :<></>
-            } */}
+            <li className="navbar__item">
+                <Link className="navbar__link" to="/texts">All Texts</Link>
+            </li>
             <li className="navbar__item" >
                 <Link className="navbar__link" onClick={(e) => { if (window.confirm('Are you sure you wish to log out?')) { handleLogout(e) } }}>Logout</Link>
             </li> 
-            {/* :
-                    <>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/register">Register</Link>
-                        </li>
-                    </> */}
-            }        </ul>
+        </ul>
     )
 }
