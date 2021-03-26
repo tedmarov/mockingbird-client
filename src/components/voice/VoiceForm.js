@@ -35,12 +35,8 @@ export const VoiceForm = (props) => {
     
     // Component state
     // Sets the state of the empty values for a Voice
-    const [voice, setVoice] = useState({
-        date_created: "",
-        categoryId: 0,
-        voice_text: ""
-    })
-    const [checked, setChecked] = useState(false)
+    const [voice, setVoice] = useState({})
+    // const [checked, setChecked] = useState(false)
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -64,12 +60,17 @@ export const VoiceForm = (props) => {
     */
     const getVoiceInEditMode = () => {
         if (editMode) {
-            const voiceId = +(props.match.params.voiceId)
-            const selectedVoice = voices.find(v => v.id === voiceId) || {}
+            const voice_id = +(props.match.params.voice_id)
+            const selectedVoice = voices.find(v => v.id === voice_id) || {}
             setVoice(selectedVoice)
-            setChecked(selectedVoice.private)
         }
     }   
+
+    const handleCheckedInputChange = (e) => {
+        const changedPrivacy = Object.assign({}, voice)
+        changedPrivacy[e.target.name] = Boolean(e.target.checked)
+        setVoice(changedPrivacy)
+    }
 
     // Object.assign creates a copy; e.target.value modifies a copy
     const handleControlledInputChange = (e) => {
@@ -82,38 +83,39 @@ export const VoiceForm = (props) => {
         setVoice(newVoice)
     }
 
-    // changes the value of the checkbox
-    const checkboxHandler = () => {
-        setChecked(!checked)
-        }
+    // // changes the value of the checkbox
+    // const checkboxHandler = () => {
+    //     setChecked(!checked)
+    //     }
 
     console.log(`${categories}`)
 
     const constructNewVoice = () => {
-        const categoryId = +(voice.categoryId)
+        const category_id = +(voice.category_id)
+        const text_id = +(voice.text_id)
 
-        if (categoryId === 0) {
+        if ( category_id === 0 || text_id === 0 ) {
             window.alert("Please select a category.")
         } else {
             if (editMode) {
                 updateVoice({
                     id: voice.id,
                     voice_name: voice.voice_name,
-                    categoryId: +(categoryId),
-                    voice_text: voice.voice_text,
+                    category_id: +(category_id),
+                    text_id: +(text_id),
                     voice_edited: voice.voice_edited,
-                    privacy: checked
+                    voice_privacy: voice.voice_privacy
                 })
                     .then(() => props.history.push("/voices"))
             } else if (voice.voice_name) {
                 addVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
-                    creator: +(localStorage.getItem("birdie")),
-                    categoryId: +(categoryId),
-                    voice_text: voice.voice_text,
+                    creator: localStorage.getItem("birdie"),
+                    category_id: +(category_id),
+                    text_id: +(text_id),
                     voice_edited: voice.voice_edited,
-                    privacy: checked
+                    voice_privacy: voice.voice_privacy
                 })
                 .then(() => props.history.push("/voices"))
             } else {
@@ -144,10 +146,10 @@ return (
             <form className="form--main">
                 <fieldset>
                     <div className="form-group">
-                        <label htmlFor="transcript" className="form-control">Recording: </label>
-                        <textarea type="text" name="dream_story" rows="15" required autoFocus className="form-control"
+                        <label htmlFor="transcript">Recording: </label>
+                        <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
                             placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
-                            defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+                            value={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
                             onChange={handleControlledInputChange}
                         />
                     </div>
@@ -203,7 +205,7 @@ return (
                 <fieldset>
                     <div>                
                     <label>
-                        <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
+                        <input type="checkbox" id="private-checkbox" value={voice.voice_privacy} onChange={handleCheckedInputChange}></input>
                             Please select if you would like privacy for your voice.
                     </label>
                 </div>

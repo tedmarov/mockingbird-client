@@ -12,15 +12,15 @@ import "./NavBar.css"
 
 export const Dashboard = (props) => {
     // const { birdies, getBirdies } = useContext(BirdieContext)
+    const { users, getUsers } = useContext(UserContext)
     const { voices, getVoices } = useContext(VoiceContext)
     const { categories, getCategories } = useContext(CategoryContext)
-    const { users, getUsers } = useContext(UserContext)
 
     const [user, setUser] = useState([])
-    const [birdie, setBirdie] = useState([])
     const [voice, setVoice] = useState([])
 
-    const birdieId = parseInt(localStorage.getItem("birdie"))
+    const birdieId = localStorage.getItem("birdie")
+    // console.log(birdieId)
 
     // Function to help update search filters, if ever implemented
     // const changeVoices = event => {
@@ -45,38 +45,35 @@ export const Dashboard = (props) => {
         then gets the data, then re-renders.
     */
     useEffect(() => {
-        console.log("This is a test")
-        getVoices()
-            .then(getUsers)
+        // console.log("This is a test")
+        getUsers()
+            .then(getVoices)
     }, [])
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === user.id)
+        const voice = voices.find(v => v.creator_id === user.id)
         setVoice(voice)
-    }, [])
+    }, [voices])
 
-    // useEffect(() => {
-    //     const user = users.find(b => b.id === birdieId) || {}
-    //     setUser(user)
-    // }, [users])
 
     return (
         <main className="dashboard">
             <article className="voicesWindow">
                 <h2>Welcome, {users.first_name} {users.last_name}.</h2>
-                <button className="viewProfile" onClick={() => props.history.push(`/users/${users.id}`)}>My Profile</button>
-                <div className="createdVoices">
-                    <h3 className="dash">Voices Created</h3>
-                    {voices.map(voice => {
-
-                            return <div className="voiceCard" key={voice.id}>
-                                < Link
-                                    to={{
-                                        pathname: `/voices/${voice.id}`
-                                    }} >
-                                    <h4>{voice.voice_name} created on {voice.    date_created}</h4>
-                                </Link>
-                            </div>
+                    <div className="createdVoices">
+                        <h3 className="dash">Voices Created</h3>
+                        {voices.map(v => {
+                            console.log(v)
+                            if (v.creator.key === birdieId) {
+                                return <div className="voiceCard" key={v.id}>
+                                    <Link
+                                        to={{
+                                            pathname: `/voices/${v.id}`
+                                        }} >
+                                        <h4>{v.voice_name} created on {v.date_created}</h4>
+                                    </Link>
+                                </div>
+                            }
                         }
                     )}
                 <button onClick={() => props.history.push("/voices/create")}>

@@ -31,7 +31,6 @@ export const VoiceProvider = (props) => {
             },
             body: JSON.stringify(voice)
         })
-            .then(getVoices)
     }
 
     const updateVoice = voice => {
@@ -42,7 +41,6 @@ export const VoiceProvider = (props) => {
             },
             body: JSON.stringify(voice)
         })
-            .then(getVoices)
     }
 
     const deleteVoice = voiceId => {
