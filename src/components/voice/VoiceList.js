@@ -17,6 +17,20 @@ export const VoiceList = (props) => {
         console.log("VoiceList: Initial render before data")
         getVoices()
     }, [])
+    
+    console.log(voices)
+
+    const birdieId = localStorage.getItem("birdie")
+
+
+    const privateMode = voices.voice_privacy
+
+    console.log(privateMode)
+
+    const verifyCreatorPrivacy = (birdieId, privateMode) => {
+        if (birdieId === voices.creator_id || privateMode === true)
+        return Boolean(false);
+    }
 
     /*
         This effect is solely for learning purposes. The effect
@@ -33,15 +47,18 @@ export const VoiceList = (props) => {
             {
                 voices.map(voice => {
                     return (<div className="voiceCard" key={voice.id}>
-                        < Link
+                        {verifyCreatorPrivacy(birdieId, voice.voice_privacy) ?  "" : < Link
                             to={{
                                 pathname: `/voices/${voice.id}`
                             }} >
                             <h3>{voice.voice_name}</h3>
-                        </Link>
+                        </Link> }
                     </div>
                     )
                 })}
+                <button onClick={() => props.history.push("/voices/create")}>
+                    Create a Voice
+                </button>
         </article>
     )
 }

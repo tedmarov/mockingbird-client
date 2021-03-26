@@ -4,6 +4,7 @@
 import React, { useContext, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { TextContext } from "./TextProvider.js"
+import { HumanDate } from "../utils/HumanDate.js"
 import "./Text.css"
 
 export const TextList = (props) => {
@@ -19,7 +20,7 @@ export const TextList = (props) => {
         console.log("TextList: Initial render before data")
         getTexts()
     }, [])
-
+    console.log(texts)
     /*
         This effect is solely for learning purposes. The effect
         it is responding to is that the Text state changed.
@@ -29,18 +30,19 @@ export const TextList = (props) => {
     //     console.log(Texts)
     // }, [Texts])
 
+    // const readableDate = Date(texts.edited_on).toLocaleDateString('en-US')
+
     return (
         <article className="textsWindow">
 
             {
                 texts.map(text => {
                     return (<div className="textCard" key={text.id}>
-                        < Link
-                            to={{
-                                pathname: `/texts/${text.id}`
-                            }} >
-                            <h3>{text.text_label}</h3>
-                        </Link>
+                            <h3>{text.text_title}</h3>
+                            <h5>{text.submitter.user.first_name} {text.submitter.user.last_name}</h5>
+                            <div>{text.text_body}</div>
+                            <div>{text.text_source}</div>
+                            <div></div>
                     </div>
                     )
                 })}

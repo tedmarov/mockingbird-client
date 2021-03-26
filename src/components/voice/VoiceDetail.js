@@ -15,10 +15,16 @@ export const VoiceDetail = (props) => {
     const { texts, getTexts } = useContext(TextContext)
     const { users, getUsers } = useContext(UserContext)
 
-    const [voice, setVoice] = useState({})
+    const [voice, setVoice] = useState({
+        category: {},
+        text: {},
+        creator: {
+            user: {}
+        }
+    })
     const [category, setCategory] = useState({})
     const [text, setText] = useState({})
-    const [user, setUser] = useState({})
+    // const [user, setUser] = useState({})
 
     const birdieId = localStorage.getItem("birdie")
 
@@ -29,32 +35,30 @@ export const VoiceDetail = (props) => {
             .then(getUsers)
     }, [])
 
-    useEffect(() => {
-        const text = texts.find(t => t.id === voice.text_id) || {}
-        setText(text)
-    }, [texts])
-    
+    console.log(voice)
+
     useEffect(() => {
         const voice = voices.find(v => v.id === +(props.match.params.voiceId)) || {}
         setVoice(voice)
     }, [voices])
-    
+
     useEffect(() => {
-        const category = categories.find(c => c.id === voice.category_id) || {}
+        const text = texts.find(t => t.id === voice.text_id) || {}
+        setText(text)
+    }, [texts])
+    console.log(categories)
+    useEffect(() => {
+        const category = categories.map(c => c.id === +(voice.categoryId)) || {}
         setCategory(category)
     }, [categories])
-
-    useEffect(() => {
-        const user = users.find(u => u.id === voice.creator_id) || {}
-        setUser(user)
-    }, [users])
-
+    
     const voice_id = voices.id
 
     const verifyCreator = (birdieId) => {
         if (birdieId === voices.creator_id)
         return Boolean(true);
     }
+    
     console.log(voices)
     return (
         <article className="voicesWindow">
@@ -62,8 +66,8 @@ export const VoiceDetail = (props) => {
                 <h3>Voice Detail: </h3>
                 <h3>Is it private? {voice.voice_privacy ? "It's private." : "It's public!" }</h3>
                 <h2>{voice.voice_name} recorded on {voice.date_created}</h2>
-                <div>Category: {category.category_label}</div>
-                <div>Text: {text.text_body}</div>
+                <div>Category: {voices.category.category_label}</div>
+                <div>Text: {voices.text.text_body}</div>
                 <div>Recording: {voice.voice_recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voices.id}`)}></button> : ""}
