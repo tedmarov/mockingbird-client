@@ -21,24 +21,13 @@ export const VoiceForm = (props) => {
     const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
     
-    // Component state
-    // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
-    const [voice_name, setVoiceName] = useState()
-    const [voice_recording, setVoiceRecording] = useState()
-    const [category, setCategory] = useState()
-
-    const [voice, setVoice] = useState({
-        voice_name: "",
-        date_created: "",
-        voice_recording: "",
-        voice_edited: false,
-        voice_privacy: false,
-        category_id: 0,
-        text_id: 0
-    })
-
     const titleDialog = React.createRef()
+
+    useEffect(() => {
+        getCategories()
+        .then(getTexts)
+        .then(getVoices)
+    }, [])
     
     useEffect(() => {
         if (props.match.params.voiceId) {
@@ -55,21 +44,32 @@ export const VoiceForm = (props) => {
             })
         }
     }, [props.match.params.eventId])
-
-    useEffect(() => {
-        getCategories()
-        .then(getTexts)
-        .then(getVoices)
-    }, [])
     
     useEffect(() => {
         getVoiceInEditMode()
     }, [voices])
     
+    const [voice, setVoice] = useState({
+        voice_name: "",
+        date_created: "",
+        voice_recording: "",
+        voice_edited: false,
+        voice_privacy: false,
+        category_id: 0,
+        text_id: 0
+    })    
+
+    // Component state
+    // Sets the state of the empty values for a Voice
+    // const [checked, setChecked] = useState(false)
+    const [voice_name, setVoiceName] = useState()
+    const [voice_recording, setVoiceRecording] = useState()
+    const [category, setCategory] = useState()
+    
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-        return console.log("Please switch to a different browser; this one does not support Speech Recognition.")
+        return null
     }
     
     // Function that passes the start-recording onClick to enable continuous recording.
@@ -179,7 +179,7 @@ return (
                     <div className="form-group">
                         <label htmlFor="transcript">Recording: </label>
                         <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
-                            placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
+                            placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
                             defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
                             onChange={handleControlledInputChange}
                         />
@@ -210,7 +210,7 @@ return (
                         required
                         defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0">Select Category</option>
+                        <option defaultValue="0">Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
                                 {c.category_label}  
@@ -225,7 +225,7 @@ return (
                         required
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0"> Select Text</option>
+                        <option defaultValue="0"> Select Text</option>
                         {texts.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}
@@ -247,6 +247,7 @@ return (
                     <button type="submit"
                         onClick={evt => {
                             evt.preventDefault() // Prevent browser from submitting the form
+                            console.log(voice)
                             constructNewVoice()
                         }}>
                         {editMode ? "Update Voice" : "Create Voice"}
