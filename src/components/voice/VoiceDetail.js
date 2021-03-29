@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { TextContext } from "../text/TextProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
 import { UserContext } from "../birdie/UserProvider.js"
@@ -10,10 +10,12 @@ import "./Voice.css"
 // To get to the users table > match users.id to userVoice.userid
 
 export const VoiceDetail = (props) => {
-    const { voices, getVoices } = useContext(VoiceContext)
+    const { voices, getVoices, getSingleVoice } = useContext(VoiceContext)
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
     const { users, getUsers } = useContext(UserContext)
+
+    const [deleteWarning, setDeleteWarning] = useState(false)
 
     const [voice, setVoice] = useState({
         category: {},
@@ -24,9 +26,7 @@ export const VoiceDetail = (props) => {
     })
     const [category, setCategory] = useState({})
     const [text, setText] = useState({})
-    // const [user, setUser] = useState({})
-
-    const birdieId = localStorage.getItem("birdie")
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         getVoices()
@@ -46,16 +46,23 @@ export const VoiceDetail = (props) => {
         const text = texts.find(t => t.id === voice.text_id) || {}
         setText(text)
     }, [texts])
+
     console.log(categories)
+    
     useEffect(() => {
         const category = categories.map(c => c.id === +(voice.categoryId)) || {}
         setCategory(category)
     }, [categories])
+
+    const birdieId = localStorage.getItem("birdie")
+
+    const profileMatch = birdieId === voice.creator_id
     
-    const voice_id = voices.id
+    // const voice_id = voices.id
 
     const verifyCreator = (birdieId) => {
-        if (birdieId === voices.creator_id)
+        console.log(voice.creator.key)
+        if (birdieId === voice.creator.key)
         return Boolean(true);
     }
     
@@ -70,7 +77,7 @@ export const VoiceDetail = (props) => {
                 <div>Text: {voice.text.text_body}</div>
                 <div>Recording: {voice.voice_recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
-                {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voices.id}`)}></button> : ""}
+                {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voice.id}`)}>Edit Voice</button> : ""}
             </section >
         </article>
 )

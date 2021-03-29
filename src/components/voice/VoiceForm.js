@@ -29,9 +29,10 @@ export const VoiceForm = (props) => {
         .then(getVoices)
     }, [])
     
+            console.log(props.match.params.voice_id)
     useEffect(() => {
-        if (props.match.params.voiceId) {
-            getVoiceById(props.match.params.VoiceId).then(voice => {
+        if (props.match.params.voice_id) {
+            getVoiceById(props.match.params.voice_id).then(voice => {
                 setVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
@@ -89,6 +90,7 @@ export const VoiceForm = (props) => {
     */
     const getVoiceInEditMode = () => {
         if (editMode) {
+            console.log(editMode)
             const voice_id = +(props.match.params.voice_id)
             const selectedVoice = voices.find(v => v.id === voice_id) || {}
             setVoice(selectedVoice)
@@ -117,7 +119,7 @@ export const VoiceForm = (props) => {
     //     setChecked(!checked)
     //     }
 
-    console.log({categories})
+    // console.log({categories})
 
     const constructNewVoice = () => {
         const categoryId = parseInt(voice.categoryId)
