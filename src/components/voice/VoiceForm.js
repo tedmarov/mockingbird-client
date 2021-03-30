@@ -122,10 +122,10 @@ export const VoiceForm = (props) => {
     // console.log({categories})
 
     const constructNewVoice = () => {
-        const categoryId = parseInt(voice.categoryId)
-        const textId = parseInt(voice.textId)
+        const category_id = parseInt(voice.category_id)
+        const text_id = parseInt(voice.text_id)
 
-        if ( categoryId === 0 || textId === 0 ) {
+        if ( category_id === 0 || text_id === 0 ) {
 
             window.alert("Please select a category.")
         } else {
@@ -134,10 +134,10 @@ export const VoiceForm = (props) => {
                     id: props.match.params.voiceId,
                     voice_name: voice.voice_name,
                     voice_recording: voice.voice_recording,
-                    category_id: voice.categoryId || voice.category.id,
-                    text_id: voice.textId || voice.text.id,
                     voice_edited: voice.voice_edited,
-                    voice_privacy: voice.voice_privacy
+                    voice_privacy: voice.voice_privacy,
+                    category_id: voice.category_id,
+                    text_id: voice.text_id
                 })
                     .then(() => props.history.push("/voices"))
             } else if (voice.voice_name) {
@@ -206,8 +206,8 @@ return (
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="categoryId"> Select Category </label>
-                    <select name="categoryId" className="form-control"
+                    <label htmlFor="category_id"> Select Category </label>
+                    <select name="category_id" className="form-control"
                         prototype="int"
                         required
                         defaultValue={voice.category_id}
@@ -221,8 +221,8 @@ return (
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="textId"> Text Title </label>
-                    <select name="textId" className="form-control"
+                    <label htmlFor="text_id"> Text Title </label>
+                    <select name="text_id" className="form-control"
                         prototype="int"
                         required
                         defaultValue={voice.text_id}

@@ -50,7 +50,7 @@ export const VoiceDetail = (props) => {
     console.log(categories)
     
     useEffect(() => {
-        const category = categories.map(c => c.id === +(voice.categoryId)) || {}
+        const category = categories.map(c => c.id === +(voice.category_id)) || {}
         setCategory(category)
     }, [categories])
 
