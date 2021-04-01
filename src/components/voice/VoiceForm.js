@@ -21,6 +21,9 @@ export const VoiceForm = (props) => {
     const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
     
+    console.log(categories)
+    console.log(texts)
+
     const titleDialog = React.createRef()
     
     useEffect(() => {
@@ -177,7 +180,7 @@ return (
             <form className="form--main">
                 <fieldset>
                     <div className="form-group">
-                        <label htmlFor="transcript">Recording: </label>
+                        <label htmlFor="voice_recording">Recording: </label>
                         <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
                             placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
                             defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
@@ -270,33 +273,3 @@ return (
     )
 
 }
-
-
-// <div className="container">
-//     <div>
-//         {transcript.charAt(0).toUpperCase() + transcript.slice(1)}
-//     </div>
-
-//     <fieldset>
-//         <div className="d-flex justify-content-center speech-recog">
-//             <button className="start-recording" onClick={startListening}>
-//                 Start Recording
-//             </button>
-
-//             <button className="stop-recording" onClick={SpeechRecognition.stopListening}>
-//                 Stop Recording
-//             </button>
-
-//             <button className="reset-recording" onClick={resetTranscript} >
-//                 Reset Recording
-//             </button>
-//         </div>
-//     </fieldset>    
-//     <fieldset>
-//         <div className="form-group">
-//             <label htmlFor="birdie_voice">Birdie Voice: </label>
-            
-//         </div>
-//     </fieldset>
-
-// </div>
