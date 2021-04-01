@@ -21,28 +21,21 @@ export const VoiceForm = (props) => {
     const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
     
-    // Component state
-    // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
-    const [voice_name, setVoiceName] = useState()
-    const [voice_recording, setVoiceRecording] = useState()
-    const [category, setCategory] = useState()
-
-    const [voice, setVoice] = useState({
-        voice_name: "",
-        date_created: "",
-        voice_recording: "",
-        voice_edited: false,
-        voice_privacy: false,
-        category_id: 0,
-        text_id: 0
-    })
-
     const titleDialog = React.createRef()
     
     useEffect(() => {
-        if (props.match.params.voiceId) {
-            getVoiceById(props.match.params.VoiceId).then(voice => {
+        getCategories()
+        getTexts()
+        getVoices()
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [])
+    
+    useEffect(() => {
+        if (props.match.params.voice_id) {
+            getVoiceById(props.match.params.voice_id).then(voice => {
                 setVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
@@ -54,22 +47,29 @@ export const VoiceForm = (props) => {
                 })
             })
         }
-    }, [props.match.params.eventId])
-
-    useEffect(() => {
-        getCategories()
-        .then(getTexts)
-        .then(getVoices)
-    }, [])
+    }, [props.match.params.voice_id])
     
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [voices])
+    const [voice, setVoice] = useState({
+        voice_name: "",
+        date_created: "",
+        voice_recording: "",
+        voice_edited: false,
+        voice_privacy: false,
+        category_id: 0,
+        text_id: 0
+    })    
     
-
+    // Component state
+    // Sets the state of the empty values for a Voice
+    // const [checked, setChecked] = useState(false)
+    const [voice_name, setVoiceName] = useState()
+    const [voice_recording, setVoiceRecording] = useState()
+    const [category, setCategory] = useState()
+    
+    
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-        return console.log("Please switch to a different browser; this one does not support Speech Recognition.")
+        return null
     }
     
     // Function that passes the start-recording onClick to enable continuous recording.
@@ -81,19 +81,31 @@ export const VoiceForm = (props) => {
     const editMode = props.match.params.hasOwnProperty("voiceId")
     
     /*
-        If there is a URL parameter, then the birdie has chosen to
-        edit a voice.
-            1. Get the value of the URL parameter.
-            2. Use that `id` to find the voice.
-            3. Update component state variable.
+    If there is a URL parameter, then the birdie has chosen to
+    edit a voice.
+    1. Get the value of the URL parameter.
+    2. Use that `id` to find the voice.
+    3. Update component state variable.
     */
     const getVoiceInEditMode = () => {
         if (editMode) {
+            console.log(editMode)
             const voice_id = +(props.match.params.voice_id)
             const selectedVoice = voices.find(v => v.id === voice_id) || {}
             setVoice(selectedVoice)
         }
     }   
+    
+        // Object.assign creates a copy; e.target.value modifies a copy
+        const handleControlledInputChange = (e) => {
+            /*
+            When changing a state object or array, always create a new one
+            and change state instead of modifying current one
+            */
+            const newVoice = Object.assign({}, voice)
+            newVoice[e.target.name] = e.target.value
+            setVoice(newVoice)
+        }
 
     const handleCheckedInputChange = (e) => {
         const changedPrivacy = Object.assign({}, voice)
@@ -101,52 +113,40 @@ export const VoiceForm = (props) => {
         setVoice(changedPrivacy)
     }
 
-    // Object.assign creates a copy; e.target.value modifies a copy
-    const handleControlledInputChange = (e) => {
-        /*
-        When changing a state object or array, always create a new one
-        and change state instead of modifying current one
-        */
-        const newVoice = Object.assign({}, voice)
-        newVoice[e.target.name] = e.target.value
-        setVoice(newVoice)
-    }
-
     // // changes the value of the checkbox
     // const checkboxHandler = () => {
     //     setChecked(!checked)
     //     }
 
-    console.log({categories})
+    // console.log({categories})
 
     const constructNewVoice = () => {
-        const categoryId = parseInt(voice.categoryId)
-        const textId = parseInt(voice.textId)
+        const category_id = parseInt(voice.category_id)
+        const text_id = parseInt(voice.text_id)
 
-        if ( categoryId === 0 || textId === 0 ) {
-
+        if ( category_id === 0 || text_id === 0 ) {
             window.alert("Please select a category.")
         } else {
             if (editMode) {
                 updateVoice({
-                    id: props.match.params.voiceId,
+                    id: voice.id,
                     voice_name: voice.voice_name,
                     voice_recording: voice.voice_recording,
-                    category_id: voice.categoryId || voice.category.id,
-                    text_id: voice.textId || voice.text.id,
                     voice_edited: voice.voice_edited,
-                    voice_privacy: voice.voice_privacy
+                    voice_privacy: voice.voice_privacy,
+                    category_id: parseInt(voice.category_id),
+                    text_id: parseInt(voice.text_id)
                 })
                     .then(() => props.history.push("/voices"))
             } else if (voice.voice_name) {
                 addVoice({
                     voice_name: voice.voice_name,
                     date_created: voice.date_created,
-                    voice_recording: voice.voice_recording,
+                    voice_recording: transcript.charAt(0).toUpperCase() + transcript.slice(1),
                     voice_edited: voice.voice_edited,
                     voice_privacy: voice.voice_privacy,
-                    category_id: voice.category_id,
-                    text_id: voice.text_id
+                    category_id: parseInt(voice.category_id),
+                    text_id: parseInt(voice.text_id)
                 })
                 .then(() => props.history.push("/voices"))
             } else {
@@ -179,7 +179,7 @@ return (
                     <div className="form-group">
                         <label htmlFor="transcript">Recording: </label>
                         <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
-                            placeholder="Click the red microphone to start recording, click the black stop button to end recording, and the circle arrow to reset the transcript."
+                            placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
                             defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
                             onChange={handleControlledInputChange}
                         />
@@ -204,13 +204,13 @@ return (
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="categoryId"> Select Category </label>
-                    <select name="categoryId" className="form-control"
+                    <label htmlFor="category_id"> Select Category </label>
+                    <select name="category_id" className="form-control"
                         prototype="int"
                         required
                         defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0">Select Category</option>
+                        <option defaultValue="0">Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
                                 {c.category_label}  
@@ -219,13 +219,13 @@ return (
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="textId"> Text Title </label>
-                    <select name="textId" className="form-control"
+                    <label htmlFor="text_id"> Text Title </label>
+                    <select name="text_id" className="form-control"
                         prototype="int"
                         required
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
-                        <option value="0"> Select Text</option>
+                        <option defaultValue="0"> Select Text</option>
                         {texts.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}
@@ -247,6 +247,7 @@ return (
                     <button type="submit"
                         onClick={evt => {
                             evt.preventDefault() // Prevent browser from submitting the form
+                            console.log(voice)
                             constructNewVoice()
                         }}>
                         {editMode ? "Update Voice" : "Create Voice"}

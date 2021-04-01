@@ -65,7 +65,7 @@ export const Dashboard = (props) => {
                         <h3 className="dash">Voices Created</h3>
                         {voices.map(v => {
                             console.log(v)
-                            if (v.creator.key === birdieId) {
+                            if (v.creator_id === birdieId) {
                                 return <div className="voiceCard" key={v.id}>
                                     <Link
                                         to={{
