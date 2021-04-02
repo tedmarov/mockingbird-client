@@ -198,7 +198,7 @@ return (
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="date_created">Voice Date and Time: </label>
+                    <label htmlFor="date_created">Voice Date: </label>
                     <input type="date" name="date_created"
                         required autoFocus
                         className="form-control"
@@ -209,8 +209,7 @@ return (
                 <fieldset>
                     <label htmlFor="category_id"> Select Category </label>
                     <select name="category_id" className="form-control"
-                        prototype="int"
-                        required
+                        proptype="int"
                         defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0">Select Category</option>
@@ -224,8 +223,7 @@ return (
                 <fieldset>
                     <label htmlFor="text_id"> Text Title </label>
                     <select name="text_id" className="form-control"
-                        prototype="int"
-                        required
+                        proptype="int"
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0"> Select Text</option>
