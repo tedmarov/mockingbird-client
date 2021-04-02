@@ -25,7 +25,7 @@ export const VoiceList = (props) => {
 
     const privateMode = voices.voice_privacy
 
-    console.log(privateMode)
+    console.log({privateMode})
 
     const verifyCreatorPrivacy = (birdieId, privateMode) => {
         if (birdieId === voices.creator_id || privateMode === true)
