@@ -244,7 +244,6 @@ return (
                 </fieldset>
             </form>
             <div className="text-center">
-                <fieldset>
                     <button type="submit"
                         onClick={evt => {
                             evt.preventDefault() // Prevent browser from submitting the form
@@ -253,8 +252,7 @@ return (
                         }}>
                         {editMode ? "Update Voice" : "Create Voice"}
                     </button>
-                </fieldset>
-                {editMode && <fieldset>
+                {editMode &&
                     <button
                         onClick={() => {
                             deleteVoice(voice.id)
@@ -262,7 +260,6 @@ return (
                                 props.history.push("/voices")
                             })
                         }}>Delete Voice</button>
-                </fieldset>
                 }
             </div>
         </section>
