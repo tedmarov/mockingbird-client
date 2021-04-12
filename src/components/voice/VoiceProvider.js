@@ -18,24 +18,21 @@ export const VoiceProvider = (props) => {
 
     const getVoices = () => {
         return fetch("http://localhost:8000/voices", {
-            method: "GET",
             headers: {
                 "Authorization": `Token ${birdie}`
             }
         })
-            .then(res => res.json())
-            .then(setVoices)
+        .then(r => r.json())
+        .then(setVoices)
     }
 
     const getSingleVoice = (voiceId) => {
         return fetch(`http://localhost:8000/voices/${voiceId}`,{
-            method: "GET",
             headers: {
                 "Authorization": `Token ${birdie}`
             }
         })
             .then(res => res.json())
-            .then(setSingleVoice)
     }
 
     const getVoicesByUser = (user_id) => {
@@ -44,6 +41,7 @@ export const VoiceProvider = (props) => {
                 "Authorization": `Token ${birdie}`
             }
         })
+        .then(res => res.json())
     }
 
     const addVoice = voice => {
@@ -55,6 +53,7 @@ export const VoiceProvider = (props) => {
             },
             body: JSON.stringify(voice)
         })
+            .then(voice)
     }
 
     const updateVoice = voice => {
@@ -66,6 +65,7 @@ export const VoiceProvider = (props) => {
             },
             body: JSON.stringify(voice)
         })
+            .then(getVoices)
     }
 
     const deleteVoice = voiceId => {
@@ -75,7 +75,7 @@ export const VoiceProvider = (props) => {
                 "Authorization": `Token ${birdie}`
             }
         })
-            .then(getVoices)
+        .then(getVoices)
     }
 
     /*

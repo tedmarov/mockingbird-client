@@ -21,6 +21,9 @@ export const VoiceForm = (props) => {
     const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
     
+    console.log(categories)
+    console.log(texts)
+
     const titleDialog = React.createRef()
     
     useEffect(() => {
@@ -177,7 +180,7 @@ return (
             <form className="form--main">
                 <fieldset>
                     <div className="form-group">
-                        <label htmlFor="transcript">Recording: </label>
+                        <label htmlFor="voice_recording">Recording: </label>
                         <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
                             placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
                             defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
@@ -195,7 +198,7 @@ return (
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="date_created">Voice Date and Time: </label>
+                    <label htmlFor="date_created">Voice Date: </label>
                     <input type="date" name="date_created"
                         required autoFocus
                         className="form-control"
@@ -206,8 +209,7 @@ return (
                 <fieldset>
                     <label htmlFor="category_id"> Select Category </label>
                     <select name="category_id" className="form-control"
-                        prototype="int"
-                        required
+                        proptype="int"
                         defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0">Select Category</option>
@@ -221,8 +223,7 @@ return (
                 <fieldset>
                     <label htmlFor="text_id"> Text Title </label>
                     <select name="text_id" className="form-control"
-                        prototype="int"
-                        required
+                        proptype="int"
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0"> Select Text</option>
@@ -243,7 +244,6 @@ return (
                 </fieldset>
             </form>
             <div className="text-center">
-                <fieldset>
                     <button type="submit"
                         onClick={evt => {
                             evt.preventDefault() // Prevent browser from submitting the form
@@ -252,8 +252,7 @@ return (
                         }}>
                         {editMode ? "Update Voice" : "Create Voice"}
                     </button>
-                </fieldset>
-                {editMode && <fieldset>
+                {editMode &&
                     <button
                         onClick={() => {
                             deleteVoice(voice.id)
@@ -261,7 +260,6 @@ return (
                                 props.history.push("/voices")
                             })
                         }}>Delete Voice</button>
-                </fieldset>
                 }
             </div>
         </section>
@@ -270,33 +268,3 @@ return (
     )
 
 }
-
-
-// <div className="container">
-//     <div>
-//         {transcript.charAt(0).toUpperCase() + transcript.slice(1)}
-//     </div>
-
-//     <fieldset>
-//         <div className="d-flex justify-content-center speech-recog">
-//             <button className="start-recording" onClick={startListening}>
-//                 Start Recording
-//             </button>
-
-//             <button className="stop-recording" onClick={SpeechRecognition.stopListening}>
-//                 Stop Recording
-//             </button>
-
-//             <button className="reset-recording" onClick={resetTranscript} >
-//                 Reset Recording
-//             </button>
-//         </div>
-//     </fieldset>    
-//     <fieldset>
-//         <div className="form-group">
-//             <label htmlFor="birdie_voice">Birdie Voice: </label>
-            
-//         </div>
-//     </fieldset>
-
-// </div>
