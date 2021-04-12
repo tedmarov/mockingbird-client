@@ -53,7 +53,7 @@ export const VoiceProvider = (props) => {
             },
             body: JSON.stringify(voice)
         })
-            .then(voice)
+            .then(getVoices)
     }
 
     const updateVoice = voice => {

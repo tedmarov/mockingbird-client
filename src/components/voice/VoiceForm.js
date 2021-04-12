@@ -1,8 +1,3 @@
-// Should be used to capture simple things; Get it to work with React JS
-// Get this piece working first
-// Use this form as a landing spot for the first incarnation of Mockingbird
-// Form first, then store the voice, then have a separate onClick/Submit Voice for the voice
-
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
@@ -10,12 +5,10 @@ import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
 import { TextContext } from "../text/TextProvider.js"
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
-
-// Want to import User, Auth components here.
-// import { ProfileProvider } from './auth/AuthProvider.js'
-
+import { useHistory } from "react-router-dom"
 
 export const VoiceForm = (props) => {
+    const history = useHistory()
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
@@ -23,6 +16,40 @@ export const VoiceForm = (props) => {
     
     console.log(categories)
     console.log(texts)
+    
+    // Component state
+    // Sets the state of the empty values for a Voice
+    // const [checked, setChecked] = useState(false)
+    const [voice_name, setVoiceName] = useState()
+    const [voice_recording, setVoiceRecording] = useState()
+    const [category, setCategory] = useState()
+        
+    const [voice, setVoice] = useState(
+        {
+            voice_name: voice.voice_name,
+            date_created: voice.date_created,
+            voice_recording: voice.voice_recording,
+            voice_edited: false,
+            voice_privacy: false,
+            category_id: "0",
+            text_id: "0"
+        })
+
+    // useEffect(() => {
+    //     if (props.match.params.voice_id) {
+    //         getVoiceById(props.match.params.voice_id).then(voice => {
+    //             setVoice({
+    //                 voice_name: voice.voice_name,
+    //                 date_created: voice.date_created,
+    //                 voice_recording: voice.voice_recording,
+    //                 voice_edited: false,
+    //                 voice_privacy: false,
+    //                 category_id: 0,
+    //                 text_id: 0
+    //             })
+    //         })
+    //     }
+    // }, [props.match.params.voice_id])
 
     const titleDialog = React.createRef()
     
@@ -35,40 +62,9 @@ export const VoiceForm = (props) => {
     useEffect(() => {
         getVoiceInEditMode()
     }, [])
+
     
-    useEffect(() => {
-        if (props.match.params.voice_id) {
-            getVoiceById(props.match.params.voice_id).then(voice => {
-                setVoice({
-                    voice_name: voice.voice_name,
-                    date_created: voice.date_created,
-                    voice_recording: voice.voice_recording,
-                    voice_edited: false,
-                    voice_privacy: false,
-                    category_id: 0,
-                    text_id: 0
-                })
-            })
-        }
-    }, [props.match.params.voice_id])
-    
-    const [voice, setVoice] = useState({
-        voice_name: "",
-        date_created: "",
-        voice_recording: "",
-        voice_edited: false,
-        voice_privacy: false,
-        category_id: 0,
-        text_id: 0
-    })    
-    
-    // Component state
-    // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
-    const [voice_name, setVoiceName] = useState()
-    const [voice_recording, setVoiceRecording] = useState()
-    const [category, setCategory] = useState()
-    
+
     
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
