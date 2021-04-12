@@ -10,5 +10,5 @@ ReactDOM.render(
             <Mockingbird />
         </Router>
     </React.StrictMode>,
-    document.getElementById('root')
+    document.getElementById("root")
 )
