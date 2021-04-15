@@ -61,8 +61,8 @@ export const VoiceDetail = (props) => {
     // const voice_id = voices.id
 
     const verifyCreator = (birdieId) => {
-        console.log(voice.creator.key)
-        if (birdieId === voice.creator.key)
+        // console.log(voice.creator.key)
+        // if (birdieId === voice.creator.key)
         return Boolean(true);
     }
     
@@ -73,8 +73,8 @@ export const VoiceDetail = (props) => {
                 <h2>Voice Detail: </h2>
                 <h3>Is it private? {voice.voice_privacy ? "It's private." : "It's public!" }</h3>
                 <h3>{voice.voice_name} recorded on {voice.date_created}</h3>
-                <h5>Category: {voice.category.category_label}</h5>
-                <div>Text: {voice.text.text_body}</div>
+                <h5>Category: {category.category_label}</h5>
+                <div>Text: {text.text_body}</div>
                 <div>Recording: {voice.voice_recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voice.id}`)}>Edit Voice</button> : ""}
