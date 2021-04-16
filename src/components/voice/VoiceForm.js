@@ -28,21 +28,21 @@ export const VoiceForm = (props) => {
         {
             voice_edited: false,
             voice_privacy: false,
-            category_id: "0",
-            text_id: "0"
+            category_id: 0,
+            text_id: 0
         })
     
     // Something of a URL parameter
     const editMode = props.match.params.hasOwnProperty("voice_id")
     
     // Object.assign creates a copy; e.target.value modifies a copy
-    const handleControlledInputChange = (e) => {
+    const handleControlledInputChange = (event) => {
         /*
         When changing a state object or array, always create a new one
         and change state instead of modifying current one
         */
         const newVoice = Object.assign({}, voice)
-        newVoice[e.target.name] = e.target.value
+        newVoice[event.target.name] = event.target.value
         setVoice(newVoice)
     }        
     
