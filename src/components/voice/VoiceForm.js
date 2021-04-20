@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { VoiceContext } from "./VoiceProvider.js"
-import { CategoryContext } from "../category/CategoryProvider.js"
-import { TextContext } from "../text/TextProvider.js"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
+import { CategoryContext } from "../category/CategoryProvider.js"
+import { TextContext } from "../text/TextProvider.js"
+import { VoiceContext } from "./VoiceProvider.js"
 
 export const VoiceForm = (props) => {
     const history = useHistory()
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
-    const { texts, getTexts } = useContext(TextContext)
+    const { text, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, updateVoice, deleteVoice } = useContext(VoiceContext)
     
     console.log(categories)
-    console.log(texts)
+    console.log(text)
     
     // Component state
     // Sets the state of the empty values for a Voice
@@ -37,15 +37,15 @@ export const VoiceForm = (props) => {
         
             const titleDialog = React.createRef()
             
-            useEffect(() => {
-                getCategories()
-                getTexts()
-                getVoices()
-            }, [])
-            
-            useEffect(() => {
-                getVoiceInEditMode()
-            }, [voices])
+    useEffect(() => {
+        getCategories()
+        getTexts()
+        getVoices()
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [voices])
         
     // Something of a URL parameter
     const editMode = props.match.params.hasOwnProperty("voiceId")
@@ -222,7 +222,7 @@ return (
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0"> Select Text</option>
-                        {texts.map(t => (
+                        {text.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}
                             </option>

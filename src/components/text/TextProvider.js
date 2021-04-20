@@ -10,7 +10,7 @@ export const TextContext = React.createContext()
  This component establishes what data can be used.
  */
 export const TextProvider = (props) => {
-    const [texts, setTexts] = useState([])
+    const [text, setTexts] = useState([])
 
     const getTexts = () => {
         return fetch("http://localhost:8000/texts", {
@@ -59,7 +59,7 @@ export const TextProvider = (props) => {
     */
     return (
         <TextContext.Provider value={{
-            texts, addText, getTexts, updateText, deleteText
+            text, addText, getTexts, updateText, deleteText
         }}>
             {props.children}
         </TextContext.Provider>
