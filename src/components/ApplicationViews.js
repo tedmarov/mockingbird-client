@@ -25,7 +25,6 @@ export const ApplicationViews = () => {
                         <Route exact path="/" render={
                             props => <Dashboard {...props} />
                         } />
-                        <Route exact path="/voices/create" render={props => <VoiceForm {...props} />} />
                     </CategoryProvider>
                 </VoiceProvider>
             </BirdieProvider>

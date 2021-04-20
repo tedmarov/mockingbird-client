@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
+import { VoiceContext } from "./VoiceProvider.js"
+import { CategoryContext } from "../category/CategoryProvider.js"
+import { TextContext } from "../text/TextProvider.js"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
-import { CategoryContext } from "../category/CategoryProvider.js"
-import { TextContext } from "../text/TextProvider.js"
-import { VoiceContext } from "./VoiceProvider.js"
 
 export const VoiceForm = (props) => {
     const history = useHistory()
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
-    const { text, getTexts } = useContext(TextContext)
+    const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, updateVoice, deleteVoice } = useContext(VoiceContext)
     
     console.log(categories)
-    console.log(text)
+    console.log(texts)
     
     // Component state
     // Sets the state of the empty values for a Voice
@@ -34,21 +34,9 @@ export const VoiceForm = (props) => {
             category_id: 0,
             text_id: 0
         })
-        
-            const titleDialog = React.createRef()
-            
-    useEffect(() => {
-        getCategories()
-        getTexts()
-        getVoices()
-    }, [])
     
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [voices])
-        
     // Something of a URL parameter
-    const editMode = props.match.params.hasOwnProperty("voiceId")
+    const editMode = props.match.params.hasOwnProperty("voice_id")
     
     // Object.assign creates a copy; e.target.value modifies a copy
     const handleControlledInputChange = (event) => {
@@ -56,9 +44,9 @@ export const VoiceForm = (props) => {
         When changing a state object or array, always create a new one
         and change state instead of modifying current one
         */
-       const newVoice = Object.assign({}, voice)
-       newVoice[event.target.name] = event.target.value
-       setVoice(newVoice)
+        const newVoice = Object.assign({}, voice)
+        newVoice[event.target.name] = event.target.value
+        setVoice(newVoice)
     }        
     
     /*
@@ -99,6 +87,18 @@ export const VoiceForm = (props) => {
     //         })
     //     }
     // }, [props.match.params.voice_id])
+
+    const titleDialog = React.createRef()
+    
+    useEffect(() => {
+        getCategories()
+        getTexts()
+        getVoices()
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [voices])
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -222,7 +222,7 @@ return (
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
                         <option defaultValue="0"> Select Text</option>
-                        {text.map(t => (
+                        {texts.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}
                             </option>
