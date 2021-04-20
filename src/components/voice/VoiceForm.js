@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import React, { useContext, useEffect, useState } from "react"
+import { useHistory } from "react-router-dom"
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
 import { TextContext } from "../text/TextProvider.js"
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
-import { useHistory } from "react-router-dom"
 
 export const VoiceForm = (props) => {
     const history = useHistory()
@@ -26,14 +26,29 @@ export const VoiceForm = (props) => {
         
     const [voice, setVoice] = useState(
         {
+            voice_name: "",
+            voice_recording: "",
             voice_edited: false,
             voice_privacy: false,
+            date_created: "",
             category_id: 0,
             text_id: 0
         })
-    
+        
+            const titleDialog = React.createRef()
+            
+            useEffect(() => {
+                getCategories()
+                getTexts()
+                getVoices()
+            }, [])
+            
+            useEffect(() => {
+                getVoiceInEditMode()
+            }, [voices])
+        
     // Something of a URL parameter
-    const editMode = props.match.params.hasOwnProperty("voice_id")
+    const editMode = props.match.params.hasOwnProperty("voiceId")
     
     // Object.assign creates a copy; e.target.value modifies a copy
     const handleControlledInputChange = (event) => {
@@ -41,9 +56,9 @@ export const VoiceForm = (props) => {
         When changing a state object or array, always create a new one
         and change state instead of modifying current one
         */
-        const newVoice = Object.assign({}, voice)
-        newVoice[event.target.name] = event.target.value
-        setVoice(newVoice)
+       const newVoice = Object.assign({}, voice)
+       newVoice[event.target.name] = event.target.value
+       setVoice(newVoice)
     }        
     
     /*
@@ -84,18 +99,6 @@ export const VoiceForm = (props) => {
     //         })
     //     }
     // }, [props.match.params.voice_id])
-
-    const titleDialog = React.createRef()
-    
-    useEffect(() => {
-        getCategories()
-        getTexts()
-        getVoices()
-    }, [])
-    
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [voices])
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {

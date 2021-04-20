@@ -13,8 +13,11 @@ import { TextProvider } from "./text/TextProvider.js"
 import { TextList } from "./text/TextList.js"
 
 export const ApplicationViews = () => {
-    return (
-        <>
+    return <>
+        <main style= {{ 
+            margin: "5rem 2rem",
+            lineHeight: "1.75rem"    
+        }}>
         <UserProvider>
             <BirdieProvider>
                 <VoiceProvider>
@@ -22,6 +25,7 @@ export const ApplicationViews = () => {
                         <Route exact path="/" render={
                             props => <Dashboard {...props} />
                         } />
+                        <Route exact path="/voices/create" render={props => <VoiceForm {...props} />} />
                     </CategoryProvider>
                 </VoiceProvider>
             </BirdieProvider>
@@ -58,7 +62,7 @@ export const ApplicationViews = () => {
                                 props => <TextList {...props} />
                             } />
         </TextProvider>   
-        </>
-    )
+        </main>
+    </>
 }
 
