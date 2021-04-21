@@ -19,17 +19,17 @@ export const VoiceProvider = (props) => {
     const getVoices = () => {
         return fetch("http://localhost:8000/voices", {
             headers: {
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
         .then(r => r.json())
         .then(setVoices)
     }
 
-    const getSingleVoice = (voiceId) => {
-        return fetch(`http://localhost:8000/voices/${voiceId}`,{
+    const getSingleVoice = id => {
+        return fetch(`http://localhost:8000/voices/${id}`,{
             headers: {
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
             .then(res => res.json())
@@ -38,41 +38,41 @@ export const VoiceProvider = (props) => {
     const getVoicesByUser = (user_id) => {
         return fetch(`http://localhost:8000/voices?user_id=${user_id}`, {
             headers: {
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
         .then(res => res.json())
     }
 
-    const addVoice = voice => {
+    const addVoice = newVoice => {
         return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             },
-            body: JSON.stringify(voice)
+            body: JSON.stringify(newVoice)
         })
-            .then(getVoices)
+            .then(newVoice)
     }
 
-    const updateVoice = voice => {
-        return fetch(`http://localhost:8000/voices/${voice.id}`, {
+    const updateVoice = updatedVoice => {
+        return fetch(`http://localhost:8000/voices/${updatedVoice.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             },
-            body: JSON.stringify(voice)
+            body: JSON.stringify(updatedVoice)
         })
             .then(getVoices)
     }
 
-    const deleteVoice = voiceId => {
-        return fetch(`http://localhost:8000/voices/${voiceId}`, {
+    const deleteVoice = id => {
+        return fetch(`http://localhost:8000/voices/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             }
         })
         .then(getVoices)
