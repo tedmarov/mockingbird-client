@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
 import { TextContext } from "../text/TextProvider.js"
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useHistory } from "react-router-dom"
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
 
 export const VoiceForm = (props) => {
@@ -30,6 +30,18 @@ export const VoiceForm = (props) => {
     // const [voice_name, setVoiceName] = useState()
     // const [voice_recording, setVoiceRecording] = useState()
     // const [category, setCategory] = useState()
+
+        const titleDialog = React.createRef()
+        
+        useEffect(() => {
+            getCategories()
+            getTexts()
+            .then(getVoices)
+        }, [])
+        
+        useEffect(() => {
+            getVoiceInEditMode()
+        }, [voices])
     
     const [currentVoice, setCurrentVoice] = useState(
         {
@@ -58,13 +70,6 @@ export const VoiceForm = (props) => {
             }
         }, [props.match.params.voiceId])
 
-        const titleDialog = React.createRef()
-        
-        useEffect(() => {
-            getCategories()
-            getTexts()
-            .then(getVoices)
-        }, [])
         
         // Something of a URL parameter
         const editMode = props.match.params.hasOwnProperty("voiceId")
@@ -79,11 +84,7 @@ export const VoiceForm = (props) => {
             newVoice[event.target.name] = event.target.value
             setCurrentVoice(newVoice)
         }        
-        
-        useEffect(() => {
-            getVoiceInEditMode()
-        }, [voices])
-        
+
         /*
         If there is a URL parameter, then the birdie has chosen to
         edit a voice.
@@ -144,9 +145,9 @@ export const VoiceForm = (props) => {
     const constructNewVoice = () => {
         const category_id = parseInt(voice.category_id)
         const text_id = parseInt(voice.text_id)
-        if ( category_id == 0 ) {
+        if ( category_id === 0 ) {
             window.alert("Please select a category.") }
-        else if ( text_id == 0 ) { 
+        else if ( text_id === 0 ) { 
             window.alert("Please select a text.") }
         else {
             if (editMode) {

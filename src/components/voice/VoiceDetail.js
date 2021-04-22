@@ -47,10 +47,8 @@ export const VoiceDetail = (props) => {
         setText(text)
     }, [texts])
 
-    console.log(categories)
-    
     useEffect(() => {
-        const category = categories.map(c => c.id === +(voice.category_id)) || {}
+        const category = categories.find(c => c.id === parseInt(voice.category_id)) || {}
         setCategory(category)
     }, [categories])
 
@@ -71,11 +69,11 @@ export const VoiceDetail = (props) => {
         <article className="voicesWindow">
             <section className="voiceDetail">
                 <h2>Voice Detail: </h2>
-                <h3>Is it private? {voice.voice_privacy ? "It's private." : "It's public!" }</h3>
-                <h3>{voice.voice_name} recorded on {voice.date_created}</h3>
+                <h3>Is it private? {voice.privacy ? "It's private." : "It's public!" }</h3>
+                <h3>{voice.name} recorded on {voice.created}</h3>
                 <h5>Category: {category.category_label}</h5>
                 <div>Text: {text.text_body}</div>
-                <div>Recording: {voice.voice_recording}</div>
+                <div>Recording: {voice.recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voice.id}`)}>Edit Voice</button> : ""}
             </section >
