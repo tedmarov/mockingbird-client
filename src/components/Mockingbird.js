@@ -5,6 +5,8 @@ import { NavBar } from "./nav/NavBar.js"
 import { Login } from "./auth/Login.js"
 import { Register } from "./auth/Register.js"
 
+// Need a login screen/register screen CS
+
 export const Mockingbird = () => (
     <>
 
@@ -19,7 +21,20 @@ export const Mockingbird = () => (
             }
         }} />
 
-        <Route path="/login" render={Login}/>
-        <Route path="/register" render={Register}/>
+        <Route path="/login" render={(props) => {
+            if (localStorage.getItem("birdie")) {
+                return <Redirect to="/" />
+            } else {
+                return <Login {...props} />
+            }
+        }} />
+
+        <Route path="/register" render={(props) => {
+            if (localStorage.getItem("birdie")) {
+                return <Redirect to="/" />
+            } else {
+                return <Register history={props.history} />
+            }
+        }} />
     </>
 )

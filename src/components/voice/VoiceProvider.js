@@ -19,7 +19,7 @@ export const VoiceProvider = (props) => {
     const getVoices = () => {
         return fetch("http://localhost:8000/voices", {
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             }
         })
         .then(r => r.json())
@@ -29,7 +29,7 @@ export const VoiceProvider = (props) => {
     const getSingleVoice = id => {
         return fetch(`http://localhost:8000/voices/${id}`,{
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             }
         })
             .then(res => res.json())
@@ -38,7 +38,7 @@ export const VoiceProvider = (props) => {
     const getVoicesByUser = (user_id) => {
         return fetch(`http://localhost:8000/voices?user_id=${user_id}`, {
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             }
         })
         .then(res => res.json())
@@ -49,7 +49,7 @@ export const VoiceProvider = (props) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             },
             body: JSON.stringify(newVoice)
         })
@@ -61,7 +61,7 @@ export const VoiceProvider = (props) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             },
             body: JSON.stringify(updatedVoice)
         })
@@ -72,7 +72,7 @@ export const VoiceProvider = (props) => {
         return fetch(`http://localhost:8000/voices/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`
+                "Authorization": `Token ${birdie}`
             }
         })
         .then(getVoices)

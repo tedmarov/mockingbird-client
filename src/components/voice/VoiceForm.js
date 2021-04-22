@@ -21,13 +21,6 @@ export const VoiceForm = (props) => {
 
     console.log(categories)
     console.log(texts)
-    
-    // Component state
-    // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
-    // const [voice_name, setVoiceName] = useState()
-    // const [voice_recording, setVoiceRecording] = useState()
-    // const [category, setCategory] = useState()
 
     const titleDialog = React.createRef()
     
@@ -39,7 +32,7 @@ export const VoiceForm = (props) => {
     
     useEffect(() => {
         getVoiceInEditMode()
-    }, [voices])
+    }, [])
     
     const [currentVoice, setCurrentVoice] = useState(
         {
@@ -52,76 +45,55 @@ export const VoiceForm = (props) => {
             text_id: 0
         })
 
-        useEffect(() => {
-            if (props.match.params.voiceId) {
-                getSingleVoice(props.match.params.voiceId).then(post => {
-                    setCurrentVoice({
-                        name: voice.name,
-                        recording: voice.recording,
-                        edited: voice.edited,
-                        privacy: voice.privacy,
-                        created: voice.created,
-                        category_id: voice.category_id,
-                        text_id: voice.text_id
-                    })
+    useEffect(() => {
+        if (props.match.params.voiceId) {
+            getSingleVoice(props.match.params.voiceId).then(voice => {
+                setCurrentVoice({
+                    name: voice.name,
+                    recording: voice.recording,
+                    edited: voice.edited,
+                    privacy: voice.privacy,
+                    created: voice.created,
+                    category_id: voice.category_id,
+                    text_id: voice.text_id
                 })
-            }
-        }, [props.match.params.voiceId])
+            })
+        }
+    }, [props.match.params.voiceId])
 
         
-        // Something of a URL parameter
-        const editMode = props.match.params.hasOwnProperty("voiceId")
-        
-        // Object.assign creates a copy; e.target.value modifies a copy
-        const handleControlledInputChange = (event) => {
-            /*
-            When changing a state object or array, always create a new one
-            and change state instead of modifying current one
-            */
-            const newVoice = Object.assign({}, currentVoice)
+    // Something of a URL parameter
+    const editMode = props.match.params.hasOwnProperty("voiceId")
+    
+    // Object.assign creates a copy; e.target.value modifies a copy
+    const handleControlledInputChange = (event) => {
+        const newVoice = Object.assign({}, currentVoice)
             newVoice[event.target.name] = event.target.value
             setCurrentVoice(newVoice)
-        }        
+    }        
 
-        /*
+    /*
         If there is a URL parameter, then the birdie has chosen to
         edit a voice.
         1. Get the value of the URL parameter.
         2. Use that `id` to find the voice.
         3. Update component state variable.
-        */
-        
-        const getVoiceInEditMode = () => {
-            if (editMode) {
-                console.log(editMode)
-                const voiceId = parseInt(props.match.params.voiceId)
-                const selectedVoice = voices.find(v => v.id === voiceId)
-                setCurrentVoice(selectedVoice)
-            }
+    */
+    
+    const getVoiceInEditMode = () => {
+        if (editMode) {
+            console.log(editMode)
+            const voiceId = parseInt(props.match.params.voiceId)
+            const selectedVoice = voices.find(v => v.id === voiceId)
+            setCurrentVoice(selectedVoice)
         }
+    }
         
     const handleCheckedInputChange = (e) => {
         const changedPrivacy = Object.assign({}, currentVoice)
         changedPrivacy[e.target.name] = Boolean(e.target.checked)
         setCurrentVoice(changedPrivacy)
     }
-
-    // useEffect(() => {
-    //     if (props.match.params.voice_id) {
-    //         getVoiceById(props.match.params.voice_id).then(voice => {
-    //             setCurrentVoice({
-    //                 voice_name: voice.voice_name,
-    //                 date_created: voice.date_created,
-    //                 voice_recording: voice.voice_recording,
-    //                 voice_edited: false,
-    //                 voice_privacy: false,
-    //                 category_id: 0,
-    //                 text_id: 0
-    //             })
-    //         })
-    //     }
-    // }, [props.match.params.voice_id])
-
 
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -132,11 +104,6 @@ export const VoiceForm = (props) => {
     const startListening = () => {
         return SpeechRecognition.startListening({ continuous: true })
     }
-
-    // // changes the value of the checkbox
-    // const checkboxHandler = () => {
-    //     setChecked(!checked)
-    //     }
 
     // console.log({categories})
 
