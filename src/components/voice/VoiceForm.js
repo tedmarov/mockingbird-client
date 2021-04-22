@@ -4,11 +4,9 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { VoiceContext } from "./VoiceProvider.js"
 import { CategoryContext } from "../category/CategoryProvider.js"
 import { TextContext } from "../text/TextProvider.js"
-import { useHistory } from "react-router-dom"
 import { faMicrophoneAlt, faRedo, faStopCircle } from "@fortawesome/free-solid-svg-icons"
 
 export const VoiceForm = (props) => {
-    const history = useHistory()
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
@@ -31,17 +29,17 @@ export const VoiceForm = (props) => {
     // const [voice_recording, setVoiceRecording] = useState()
     // const [category, setCategory] = useState()
 
-        const titleDialog = React.createRef()
-        
-        useEffect(() => {
-            getCategories()
-            getTexts()
-            .then(getVoices)
-        }, [])
-        
-        useEffect(() => {
-            getVoiceInEditMode()
-        }, [voices])
+    const titleDialog = React.createRef()
+    
+    useEffect(() => {
+        getCategories()
+        getTexts()
+        getVoices()
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [voices])
     
     const [currentVoice, setCurrentVoice] = useState(
         {
