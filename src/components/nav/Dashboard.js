@@ -12,7 +12,6 @@ import "./NavBar.css"
 // Create a button to Create New Voice for user to go to New Voice Form
 
 export const Dashboard = (props) => {
-    // const { birdies, getBirdies } = useContext(BirdieContext)
     const { users, getUsers } = useContext(UserContext)
     const { voices, getVoices } = useContext(VoiceContext)
     const { categories, getCategories } = useContext(CategoryContext)
@@ -21,24 +20,6 @@ export const Dashboard = (props) => {
     const [voice, setVoice] = useState([])
 
     const birdieId = localStorage.getItem("birdie")
-    // console.log(birdieId)
-
-    // Function to help update search filters, if ever implemented
-    // const changeVoices = event => {
-    //     if (event.target.value !== "0") {
-
-    //         const newVoices = []
-    //         voices.forEach(voice => {
-    //             if (+(voice.category.id) === +(event.target.value)) {
-    //                 newVoices.push(voice)
-    //             }
-    //             setFiltered(newVoices)
-    //         })
-    //     }
-    //     else {
-    //         setFiltered(voices)
-    //     }
-    // }
 
     /*
         What's the effect this is reponding to? Component was
@@ -46,7 +27,6 @@ export const Dashboard = (props) => {
         then gets the data, then re-renders.
     */
     useEffect(() => {
-        // console.log("This is a test")
         getUsers()
             .then(getVoices)
     }, [])
@@ -55,7 +35,6 @@ export const Dashboard = (props) => {
         const voice = voices.find(v => v.creator_id === user.id)
         setVoice(voice)
     }, [voices])
-
 
     return (
         <main className="dashboard">
@@ -71,7 +50,7 @@ export const Dashboard = (props) => {
                                         to={{
                                             pathname: `/voices/${v.id}`
                                         }} >
-                                        <h4>{v.voice_name} created on {v.date_created}</h4>
+                                        <h4>{v.name} created on {v.created}</h4>
                                     </Link>
                                 </div>
                             }
