@@ -41,7 +41,7 @@ export const VoiceForm = (props) => {
             getVoiceById(props.match.params.voice_id).then(voice => {
                 setVoice({
                     voice_name: voice.voice_name,
-                    date_created: voice.date_created,
+                    create_date: voice.create_date,
                     voice_recording: voice.voice_recording,
                     voice_edited: false,
                     voice_privacy: false,
@@ -54,7 +54,7 @@ export const VoiceForm = (props) => {
     
     const [voice, setVoice] = useState({
         voice_name: "",
-        date_created: "",
+        create_date: "",
         voice_recording: "",
         voice_edited: false,
         voice_privacy: false,
@@ -144,7 +144,7 @@ export const VoiceForm = (props) => {
             } else if (voice.voice_name) {
                 addVoice({
                     voice_name: voice.voice_name,
-                    date_created: voice.date_created,
+                    create_date: voice.create_date,
                     voice_recording: transcript.charAt(0).toUpperCase() + transcript.slice(1),
                     voice_edited: voice.voice_edited,
                     voice_privacy: voice.voice_privacy,
@@ -198,12 +198,12 @@ return (
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="date_created">Voice Date: </label>
-                    <input type="date" name="date_created"
+                    <label htmlFor="create_date">Voice Date: </label>
+                    <input type="date" name="create_date"
                         required autoFocus
                         className="form-control"
                         placeholder="Date Voice Created"
-                        defaultValue={voice.date_created}
+                        defaultValue={voice.create_date}
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>

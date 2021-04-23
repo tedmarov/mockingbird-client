@@ -50,7 +50,7 @@ export const Dashboard = (props) => {
                                         to={{
                                             pathname: `/voices/${v.id}`
                                         }} >
-                                        <h4>{v.name} created on {v.created}</h4>
+                                        <h4>{v.name} created on {v.create_date}</h4>
                                     </Link>
                                 </div>
                             }
