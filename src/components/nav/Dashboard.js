@@ -28,6 +28,7 @@ export const Dashboard = (props) => {
     */
     useEffect(() => {
         getUsers()
+        getCategories()
             .then(getVoices)
     }, [])
 
@@ -60,21 +61,22 @@ export const Dashboard = (props) => {
                     Create a Voice
                 </button>
                 </div>
-                {/* <div>
-                    <h3 className="dash">Voices Subscribed</h3>
-                    {birdieVoicesExpanded.map(voice => {
-                        if (voice.birdieId === birdieId)
-                            return <div className="voiceCard" key={voice.id}>
-                                < Link
-                                    to={{
-                                        pathname: `/voices/${voice.voice.id}`
-                                    }} >
-                                    <h4>{voice.voice.voiceName} recorded on {voice.voice.voiceDateAndTime}</h4>
-                                </Link>
-                            </div>
-                    })}
-                </div> */}
             </article>
         </main>
     )
 }
+
+{/* <div>
+    <h3 className="dash">Voices Subscribed</h3>
+    {birdieVoicesExpanded.map(voice => {
+        if (voice.birdieId === birdieId)
+            return <div className="voiceCard" key={voice.id}>
+                < Link
+                    to={{
+                        pathname: `/voices/${voice.voice.id}`
+                    }} >
+                    <h4>{voice.voice.voiceName} recorded on {voice.voice.voiceDateAndTime}</h4>
+                </Link>
+            </div>
+    })}
+</div> */}

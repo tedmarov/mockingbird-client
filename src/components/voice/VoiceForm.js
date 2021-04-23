@@ -46,8 +46,8 @@ export const VoiceForm = (props) => {
         })
 
     useEffect(() => {
-        if (props.match.params.voiceId) {
-            getSingleVoice(props.match.params.voiceId).then(voice => {
+        if (props.match.params.voice_id) {
+            getSingleVoice(props.match.params.voice_id).then(voice => {
                 setCurrentVoice({
                     name: voice.name,
                     recording: voice.recording,
@@ -59,11 +59,11 @@ export const VoiceForm = (props) => {
                 })
             })
         }
-    }, [props.match.params.voiceId])
+    }, [props.match.params.voice_id])
 
         
     // Something of a URL parameter
-    const editMode = props.match.params.hasOwnProperty("voiceId")
+    const editMode = props.match.params.hasOwnProperty("voice_id")
     
     // Object.assign creates a copy; e.target.value modifies a copy
     const handleControlledInputChange = (event) => {
@@ -83,8 +83,8 @@ export const VoiceForm = (props) => {
     const getVoiceInEditMode = () => {
         if (editMode) {
             console.log(editMode)
-            const voiceId = parseInt(props.match.params.voiceId)
-            const selectedVoice = voices.find(v => v.id === voiceId)
+            const voice_id = parseInt(props.match.params.voice_id)
+            const selectedVoice = voices.find(v => v.id === voice_id)
             setCurrentVoice(selectedVoice)
         }
     }
@@ -117,7 +117,7 @@ export const VoiceForm = (props) => {
         else {
             if (editMode) {
                 const newVoice={
-                    id: props.match.params.voiceId,
+                    id: props.match.params.voice_id,
                     name: currentVoice.name,
                     recording: currentVoice.recording,
                     edited: true,
@@ -197,7 +197,7 @@ export const VoiceForm = (props) => {
                             proptype="int"
                             defaultValue={voice.category_id}
                             onChange={handleControlledInputChange}>
-                            <option defaultValue="0">Select Category</option>
+                            <option>Select Category</option>
                             {categories.map(c => (
                                 <option key={c.id} value={c.id} >
                                     {c.category_label}  
@@ -211,7 +211,7 @@ export const VoiceForm = (props) => {
                             proptype="int"
                             defaultValue={voice.text_id}
                             onChange={handleControlledInputChange}>
-                            <option defaultValue="0"> Select Text</option>
+                            <option> Select Text</option>
                             {texts.map(t => (
                                 <option key={t.id} value={t.id} >
                                     {t.text_title}

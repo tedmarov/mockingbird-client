@@ -38,7 +38,7 @@ export const VoiceDetail = (props) => {
     console.log(voice)
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === +(props.match.params.voiceId)) || {}
+        const voice = voices.find(v => v.id === +(props.match.params.voice_id)) || {}
         setVoice(voice)
     }, [voices])
 
