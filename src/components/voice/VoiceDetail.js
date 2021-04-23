@@ -27,20 +27,18 @@ export const VoiceDetail = (props) => {
     const [category, setCategory] = useState({})
     const [text, setText] = useState({})
     const [user, setUser] = useState({})
-    
-    const birdieId = localStorage.getItem("birdie")
 
     useEffect(() => {
         getVoices()
-        getTexts()
-        getCategories()
-        getUsers()
+            .then(getTexts)
+            .then(getCategories)
+            .then(getUsers)
     }, [])
 
     console.log(voice)
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === +(props.match.params.voiceId)) || {}
+        const voice = voices.find(v => v.id === +(props.match.params.voice_id)) || {}
         setVoice(voice)
     }, [voices])
 
@@ -53,6 +51,8 @@ export const VoiceDetail = (props) => {
         const category = categories.find(c => c.id === parseInt(voice.category_id)) || {}
         setCategory(category)
     }, [categories])
+
+    const birdieId = localStorage.getItem("birdie")
 
     const profileMatch = birdieId === voice.creator_id
     

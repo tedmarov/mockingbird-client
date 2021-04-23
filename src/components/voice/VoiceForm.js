@@ -212,7 +212,7 @@ return (
                         proptype="int"
                         defaultValue={voice.category_id}
                         onChange={handleControlledInputChange}>
-                        <option defaultValue="0">Select Category</option>
+                        <option>Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
                                 {c.category_label}  
@@ -226,7 +226,7 @@ return (
                         proptype="int"
                         defaultValue={voice.text_id}
                         onChange={handleControlledInputChange}>
-                        <option defaultValue="0"> Select Text</option>
+                        <option> Select Text</option>
                         {texts.map(t => (
                             <option key={t.id} value={t.id} >
                                 {t.text_title}
