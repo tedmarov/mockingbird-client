@@ -3,7 +3,7 @@
 // Use this form as a landing spot for the first incarnation of Mockingbird
 // Form first, then store the voice, then have a separate onClick/Submit Voice for the voice
 
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { VoiceContext } from "./VoiceProvider.js"
@@ -20,53 +20,84 @@ export const VoiceForm = (props) => {
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
     const { voices, addVoice, getVoices, getVoiceById, updateVoice, deleteVoice } = useContext(VoiceContext)
-    
-    console.log(categories)
-    console.log(texts)
-    
-    const titleDialog = React.createRef()
-    useEffect(() => {
-        if (props.match.params.voice_id) {
-            getVoiceById(props.match.params.voice_id).then(voice => {
-                setVoice({
-                    voice_name: voice.voice_name,
-                    create_date: voice.create_date,
-                    voice_recording: voice.voice_recording,
-                    voice_edited: false,
-                    voice_privacy: false,
-                    category_id: 0,
-                    text_id: 0
-                })
-            })
-        }
-    }, [props.match.params.voice_id])
-    
-    useEffect(() => {
-        getCategories()
-        getTexts()
-        getVoices()
-    }, [])
-    
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [])
+    const [voice, setVoice] = useState({})
     
     // Component state
     // Sets the state of the empty values for a Voice
     // const [checked, setChecked] = useState(false)
-    const [voice_name, setVoiceName] = useState()
-    const [voice_recording, setVoiceRecording] = useState()
+    const [name, setName] = useState()
+    const [recording, setRecording] = useState()
     const [category, setCategory] = useState()
+    const [text, setText] = useState()
     
-    const [voice, setVoice] = useState({
+    const [currentVoice, setCurrentVoice] = useState({
+        category_id: 0,
+        text_id: 0,
         name: "",
         create_date: "",
         recording: "",
         edited: false,
-        privacy: false,
-        category_id: 0,
-        text_id: 0
+        privacy: false
     })    
+    console.log(categories)
+    console.log(texts)
+    
+    const titleDialog = React.createRef()
+    
+    useEffect(() => {
+        if (props.match.params.voiceId) {
+            getVoiceById(props.match.params.voiceId).then(voice => {
+                setCurrentVoice({
+                    category_id: voice.category_id,
+                    text_id: voice.text_id,
+                    name: voice.name,
+                    create_date: voice.create_date,
+                    recording: voice.recording,
+                    edited: false,
+                    privacy: false
+                })
+            })
+        }
+    }, [props.match.params.voiceId])
+    
+    useEffect(() => {
+        getCategories()
+        getTexts()
+        .then(getVoices)
+    }, [])
+    
+    // Something of a URL parameter
+    const editMode = props.match.params.hasOwnProperty("voiceId")
+    
+    // Object.assign creates a copy; e.target.value modifies a copy
+    const handleControlledInputChange = (event) => {
+        
+        /* When changing a state object or array, always create a new one
+        and change state instead of modifying current one */
+        
+        const newVoice = Object.assign({}, currentVoice)
+        newVoice[event.target.name] = event.target.value
+        setVoice(newVoice)
+    }
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [voices])
+    
+    /*
+    If there is a URL parameter, then the birdie has chosen to
+    edit a voice.
+    1. Get the value of the URL parameter.
+    2. Use that `id` to find the voice.
+    3. Update component state variable.
+    */
+    const getVoiceInEditMode = () => {
+        if (editMode) {
+            const voiceId=parseInt(props.match.params.voiceId)
+            const selectedVoice=voices.find(v => v.id === voiceId) || {}
+            setVoice(selectedVoice)
+        }
+    }   
     
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -78,35 +109,6 @@ export const VoiceForm = (props) => {
         return SpeechRecognition.startListening({ continuous: true })
     }
     
-    // Something of a URL parameter
-    const editMode = props.match.params.hasOwnProperty("voiceId")
-    
-    /*
-    If there is a URL parameter, then the birdie has chosen to
-    edit a voice.
-    1. Get the value of the URL parameter.
-    2. Use that `id` to find the voice.
-    3. Update component state variable.
-    */
-    const getVoiceInEditMode = () => {
-        if (editMode) {
-            console.log(editMode)
-            const voice_id = +(props.match.params.voice_id)
-            const selectedVoice = voices.find(v => v.id === voice_id) || {}
-            setVoice(selectedVoice)
-        }
-    }   
-    
-        // Object.assign creates a copy; e.target.value modifies a copy
-        const handleControlledInputChange = (e) => {
-            /*
-            When changing a state object or array, always create a new one
-            and change state instead of modifying current one
-            */
-            const newVoice = Object.assign({}, voice)
-            newVoice[e.target.name] = e.target.value
-            setVoice(newVoice)
-        }
 
     const handleCheckedInputChange = (e) => {
         const changedPrivacy = Object.assign({}, voice)
@@ -131,21 +133,22 @@ export const VoiceForm = (props) => {
             if (editMode) {
                 updateVoice({
                     id: voice.id,
-                    voice_name: voice.voice_name,
-                    voice_recording: voice.voice_recording,
-                    voice_edited: voice.voice_edited,
-                    voice_privacy: voice.voice_privacy,
+                    name: voice.name,
+                    recording: voice.recording,
+                    edited: voice.edited,
+                    privacy: voice.privacy,
                     category_id: parseInt(voice.category_id),
                     text_id: parseInt(voice.text_id)
                 })
                     .then(() => props.history.push("/voices"))
-            } else if (voice.voice_name) {
+            } else if (voice.name) {
                 addVoice({
-                    voice_name: voice.voice_name,
+                    name: voice.name,
                     create_date: voice.create_date,
-                    voice_recording: transcript.charAt(0).toUpperCase() + transcript.slice(1),
-                    voice_edited: voice.voice_edited,
-                    voice_privacy: voice.voice_privacy,
+                    recording: transcript.charAt(0).toUpperCase() + transcript.slice(1),
+                    edited: voice.edited,
+                    privacy: voice.privacy,
+                    creator_id: voice.creator_id,
                     category_id: parseInt(voice.category_id),
                     text_id: parseInt(voice.text_id)
                 })
@@ -178,21 +181,21 @@ return (
             <form className="form--main">
                 <fieldset>
                     <div className="form-group">
-                        <label htmlFor="voice_recording">Recording: </label>
-                        <textarea disabled type="text" name="voice_recording" rows="15" required autoFocus className="form-control"
+                        <label htmlFor="recording">Recording: </label>
+                        <textarea disabled type="text" name="recording" rows="15" required autoFocus className="form-control"
                             placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
-                            defaultValue={voice.voice_recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+                            defaultValue={voice.recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
                             onChange={handleControlledInputChange}
                         />
                     </div>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="voice_name">Voice Name: </label>
-                    <input type="text" name="voice_name"
+                    <label htmlFor="name">Voice Name: </label>
+                    <input type="text" name="name"
                         required autoFocus
                         className="form-control"
                         placeholder="Voice Name"
-                        defaultValue={voice.voice_name}
+                        defaultValue={voice.name}
                         onChange={handleControlledInputChange} />
                 </fieldset>
                 <fieldset>
