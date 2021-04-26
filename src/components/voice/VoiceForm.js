@@ -23,19 +23,8 @@ export const VoiceForm = (props) => {
     
     console.log(categories)
     console.log(texts)
-
+    
     const titleDialog = React.createRef()
-    
-    useEffect(() => {
-        getCategories()
-        getTexts()
-        getVoices()
-    }, [])
-    
-    useEffect(() => {
-        getVoiceInEditMode()
-    }, [])
-    
     useEffect(() => {
         if (props.match.params.voice_id) {
             getVoiceById(props.match.params.voice_id).then(voice => {
@@ -52,15 +41,15 @@ export const VoiceForm = (props) => {
         }
     }, [props.match.params.voice_id])
     
-    const [voice, setVoice] = useState({
-        voice_name: "",
-        create_date: "",
-        voice_recording: "",
-        voice_edited: false,
-        voice_privacy: false,
-        category_id: 0,
-        text_id: 0
-    })    
+    useEffect(() => {
+        getCategories()
+        getTexts()
+        getVoices()
+    }, [])
+    
+    useEffect(() => {
+        getVoiceInEditMode()
+    }, [])
     
     // Component state
     // Sets the state of the empty values for a Voice
@@ -69,6 +58,15 @@ export const VoiceForm = (props) => {
     const [voice_recording, setVoiceRecording] = useState()
     const [category, setCategory] = useState()
     
+    const [voice, setVoice] = useState({
+        name: "",
+        create_date: "",
+        recording: "",
+        edited: false,
+        privacy: false,
+        category_id: 0,
+        text_id: 0
+    })    
     
     // If browser doesn't support speech recognition, return null
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -215,7 +213,7 @@ return (
                         <option>Select Category</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id} >
-                                {c.category_label}  
+                                {c.label}  
                             </option>
                         ))}
                     </select>
@@ -229,7 +227,7 @@ return (
                         <option> Select Text</option>
                         {texts.map(t => (
                             <option key={t.id} value={t.id} >
-                                {t.text_title}
+                                {t.title}
                             </option>
                         ))}
                     </select>

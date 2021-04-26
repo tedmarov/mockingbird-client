@@ -22,8 +22,7 @@ export const Dashboard = (props) => {
     const birdieId = localStorage.getItem("birdie")
 
     /*
-        What's the effect this is reponding to? Component was
-        "mounted" to the DOM. React renders blank HTML first,
+        Component was "mounted" to the DOM. React renders blank HTML first,
         then gets the data, then re-renders.
     */
     useEffect(() => {

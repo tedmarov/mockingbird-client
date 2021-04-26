@@ -9,7 +9,7 @@ export const CategoryContext = React.createContext()
 /*
  This component establishes what data can be used.
  */
-export const CategoryProvider = (props) => {
+export const CategoryProvider = props => {
     const [categories, setCategories] = useState([])
 
     const getCategories = () => {
@@ -26,8 +26,8 @@ export const CategoryProvider = (props) => {
         return fetch("http://localhost:8000/categories", {
             method: "POST",
             headers: {
-                "Authorization": `Token ${localStorage.getItem("birdie")}`,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             },
             body: JSON.stringify(category)
         })

@@ -14,7 +14,7 @@ export const VoiceDetail = (props) => {
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
     const { users, getUsers } = useContext(UserContext)
-
+console.log(texts)
     const [deleteWarning, setDeleteWarning] = useState(false)
 
     const [voice, setVoice] = useState({
@@ -30,9 +30,9 @@ export const VoiceDetail = (props) => {
 
     useEffect(() => {
         getVoices()
-            .then(getTexts)
-            .then(getCategories)
-            .then(getUsers)
+        getUsers()
+        getTexts()
+        getCategories()
     }, [])
 
     console.log(voice)
@@ -46,6 +46,8 @@ export const VoiceDetail = (props) => {
         const text = texts.find(t => t.id === voice.text_id) || {}
         setText(text)
     }, [texts])
+    console.log(text)
+
 
     useEffect(() => {
         const category = categories.find(c => c.id === parseInt(voice.category_id)) || {}
@@ -70,9 +72,9 @@ export const VoiceDetail = (props) => {
             <section className="voiceDetail">
                 <h2>Voice Detail: </h2>
                 <h3>Is it private? {voice.privacy ? "It's private." : "It's public!" }</h3>
-                <h3>{voice.name} recorded on {voice.created}</h3>
-                <h5>Category: {category.category_label}</h5>
-                <div>Text: {text.text_body}</div>
+                <h3>{voice.name} recorded on {voice.create_date}</h3>
+                <h5>Category: {category.label}</h5>
+                <div>Text: {text.body}</div>
                 <div>Recording: {voice.recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voice.id}`)}>Edit Voice</button> : ""}
