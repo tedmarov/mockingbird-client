@@ -40,7 +40,7 @@ export const ApplicationViews = () => {
                             <Route path="/voices/:voice_id(\d+)" render={
                                 props => <VoiceDetail {...props} />
                             } />
-                            <Route path="/voices/edit/:voice_id(\d+)" render={
+                            <Route path="/voices/edit/:voiceId(\d+)" render={
                                 props => <VoiceForm {...props} />
                             } />                            
                         </CategoryProvider>

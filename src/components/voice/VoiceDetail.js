@@ -66,7 +66,6 @@ console.log(texts)
         return Boolean(true);
     }
     
-    console.log(voices)
     return (
         <article className="voicesWindow">
             <section className="voiceDetail">

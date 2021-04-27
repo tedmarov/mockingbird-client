@@ -1,14 +1,30 @@
 .navbar {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  color: #404040;
+  font-family: "Fjalla One", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  border-radius: 15px;
 }
 
 .navbar__item {
-    flex-basis: 15%;
-    list-style-type: none;
+  flex-basis: 20%;
+  list-style-type: none;
 }
 
-.navbar__logo {
-    max-height: 6rem;
+.menu__link {
+  text-decoration: none;
+}
+
+.dashboard {
+  display: block;
+  justify-content: space-evenly;
+  text-align: center;
+  margin: 1em;
+  padding: 1em;
+  flex-basis: 20%;
+  border-radius: 15px;
 }
