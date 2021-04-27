@@ -1,17 +1,15 @@
 import React, { useState } from "react"
 
-/*
-    The context is imported and used by individual components
-    that need data
-*/
+//The context is imported and used by individual components that need data.
+// It's an empty warehouse for Category data right now.
 export const CategoryContext = React.createContext()
 
-/*
- This component establishes what data can be used.
- */
+// This component establishes what data can be used.
+// useState holds and sets an array of Categories.
 export const CategoryProvider = props => {
     const [categories, setCategories] = useState([])
 
+    // These are State Transition Functions for Categories
     const getCategories = () => {
         return fetch("http://localhost:8000/categories", {
             headers: {
@@ -58,9 +56,8 @@ export const CategoryProvider = props => {
 
     /*
         You return a context provider which has the
-        `categories` state, the `addCategory` function,
-        and the `getCategory` function as keys. This
-        allows any child elements to access them.
+        `categories` state (array of Categories), the `addCategory` function,
+        and the `getCategory` function as keys. This allows any child elements to access them.
     */
     return (
         <CategoryContext.Provider value={{

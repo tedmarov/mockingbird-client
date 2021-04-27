@@ -1,17 +1,15 @@
 import React, { useState } from "react"
 
-/*
-    The context is imported and used by individual components
-    that need data
-*/
+//The context is imported and used by individual components that need data.
+// It's an empty warehouse for Voice data right now.
 export const TextContext = React.createContext()
 
-/*
- This component establishes what data can be used.
- */
+// This component establishes what data can be used.
+// useState holds and sets an array of Texts
 export const TextProvider = (props) => {
     const [texts, setTexts] = useState([])
 
+    // These are State Transition Functions for Texts
     const getTexts = () => {
         return fetch("http://localhost:8000/texts", {
             headers: {
@@ -53,9 +51,8 @@ export const TextProvider = (props) => {
 
     /*
         You return a context provider which has the
-        `texts` state, the `addText` function,
-        and the `getText` function as keys. This
-        allows any child elements to access them.
+        `texts` state (array of Texts), the `addText` function,
+        and the `getText` function as keys. This allows any child elements to access them.
     */
     return (
         <TextContext.Provider value={{

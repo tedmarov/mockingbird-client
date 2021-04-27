@@ -15,7 +15,6 @@ import { TextContext } from "../text/TextProvider.js"
 // Want to import User, Auth components here.
 // import { ProfileProvider } from './auth/AuthProvider.js'
 
-
 export const VoiceForm = (props) => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
@@ -41,7 +40,6 @@ export const VoiceForm = (props) => {
     
     // Component state
     // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
     const [voice, setVoice] = useState({})
     const [checked, setChecked] = useState(false)
     
@@ -72,24 +70,30 @@ export const VoiceForm = (props) => {
         }
     }   
         
-    // Object.assign creates a copy; e.target.value modifies a copy
-    /* When changing a state object or array, always create a new one
-    and change state instead of modifying current one */    
+    /* 
+        Object.assign creates a copy; e.target.value modifies a copy.
+        When changing a state object or array, always create a new one
+        and change state instead of modifying current one. 
+        When a field changes, update the state.
+    */    
     const handleControlledInputChange = (e) => {
         const newVoice = Object.assign({}, voice)
         newVoice[e.target.name] = e.target.value
         setVoice(newVoice)
     }
     
-    // changes the value of the checkbox
+    // Changes the value of the checkbox
     const checkboxHandler = () => {
         setChecked(!checked)
     }
 
-    console.log(categories)
-    console.log(texts)
-    
-    
+    /* 
+        Check if the IDs are 0/Not selected. If they are, give a window pop-up asking the user to select an item for both.
+        Or else if there are chosen IDs for Category and Text, proceed on to updating or creating an object.
+        If there is a URL paramater, retrieve data from existing object.
+        Or else if there is at least a name entered into the voice object, add the object.
+        Otherwise give them a dialog pop-up box.
+    */
     const constructNewVoice = () => {
         if ( voice.category_id === 0 || voice.text_id === 0 ) {
             window.alert("Please select a category.")
@@ -126,10 +130,12 @@ export const VoiceForm = (props) => {
         <main className="container--main">
             <section>
             <dialog className="dialog dialog--password" ref={titleDialog}>
+                {/* This pops up if there is no voice name entered. */}
                 <div>Please enter a voice name.</div>
                 <button className="button--close" onClick={e => titleDialog.current.close()}>Close</button>
             </dialog>
                 <fieldset>
+                    {/* This renders depending on if the voice object already exists or needs to be created. */}
                     <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
                 </fieldset>
                 <form className="form--main">
@@ -183,6 +189,7 @@ export const VoiceForm = (props) => {
                     <fieldset>
                         <div>                
                         <label>
+                            {/* Just a basic checkbox with a boolean value that can be private or public. */}
                             <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
                                 Please select if you would like privacy for your voice.
                         </label>
@@ -192,7 +199,7 @@ export const VoiceForm = (props) => {
                 <div className="text-center">
                         <button type="submit"
                             onClick={event => {
-                                event.preventDefault() // Prevent browser from submitting the form
+                                event.preventDefault() // Prevent browser from submitting the form empty
                                 console.log(voice)
                                 constructNewVoice()
                             }}>

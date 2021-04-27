@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 
-/*
-    The context is imported and used by individual components
-    that need data
-*/
+// The context is imported and used by individual components that need data.
+// It's an empty warehouse for voice data right now.
 export const VoiceContext = React.createContext()
 
-/*
- This component establishes what data can be used.
- */
+
+// This component establishes what data can be used.
+// useState holds and sets an array of Voices
 export const VoiceProvider = (props) => {
     const [voices, setVoices] = useState([])
     const [singleVoice, setSingleVoice] = useState([])
@@ -16,6 +14,7 @@ export const VoiceProvider = (props) => {
 
     const birdie = localStorage.getItem("birdie")
 
+    // These are State Transition Functions for Voices
     const getVoices = () => {
         return fetch("http://localhost:8000/voices", {
             headers: {
@@ -80,9 +79,8 @@ export const VoiceProvider = (props) => {
 
     /*
         You return a context provider which has the
-        `voices` state, the `addVoice` function,
-        and the `getdVoice` function as keys. This
-        allows any child elements to access them.
+        `voices` state (array of Voices), the `addVoice` function,
+        and the `getVoice` function as keys. This allows any child elements to access them.
     */
     return (
         <VoiceContext.Provider value={{
