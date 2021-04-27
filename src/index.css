@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.disclaimer {
+  text-align: center;
+  font-family: "Fjalla One", Arial, sans-serif;
+}
+
+.imageDiv {
+  display: block;
+  text-align: center;
+}

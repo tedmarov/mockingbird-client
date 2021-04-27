@@ -14,7 +14,7 @@ export const VoiceDetail = (props) => {
     const { categories, getCategories } = useContext(CategoryContext)
     const { texts, getTexts } = useContext(TextContext)
     const { users, getUsers } = useContext(UserContext)
-
+console.log(texts)
     const [deleteWarning, setDeleteWarning] = useState(false)
 
     const [voice, setVoice] = useState({
@@ -30,15 +30,15 @@ export const VoiceDetail = (props) => {
 
     useEffect(() => {
         getVoices()
-            .then(getTexts)
-            .then(getCategories)
-            .then(getUsers)
+        getUsers()
+        getTexts()
+        getCategories()
     }, [])
 
     console.log(voice)
 
     useEffect(() => {
-        const voice = voices.find(v => v.id === +(props.match.params.voiceId)) || {}
+        const voice = voices.find(v => v.id === +(props.match.params.voice_id)) || {}
         setVoice(voice)
     }, [voices])
 
@@ -46,11 +46,11 @@ export const VoiceDetail = (props) => {
         const text = texts.find(t => t.id === voice.text_id) || {}
         setText(text)
     }, [texts])
+    console.log(text)
 
-    console.log(categories)
-    
+
     useEffect(() => {
-        const category = categories.map(c => c.id === +(voice.category_id)) || {}
+        const category = categories.find(c => c.id === parseInt(voice.category_id)) || {}
         setCategory(category)
     }, [categories])
 
@@ -61,21 +61,20 @@ export const VoiceDetail = (props) => {
     // const voice_id = voices.id
 
     const verifyCreator = (birdieId) => {
-        console.log(voice.creator.key)
-        if (birdieId === voice.creator.key)
+        // console.log(voice.creator.key)
+        // if (birdieId === voice.creator.key)
         return Boolean(true);
     }
     
-    console.log(voices)
     return (
         <article className="voicesWindow">
             <section className="voiceDetail">
                 <h2>Voice Detail: </h2>
-                <h3>Is it private? {voice.voice_privacy ? "It's private." : "It's public!" }</h3>
-                <h3>{voice.voice_name} recorded on {voice.date_created}</h3>
-                <h5>Category: {voice.category.category_label}</h5>
-                <div>Text: {voice.text.text_body}</div>
-                <div>Recording: {voice.voice_recording}</div>
+                <h3>Is it private? {voice.privacy ? "It's private." : "It's public!" }</h3>
+                <h3>{voice.name} recorded on {voice.create_date}</h3>
+                <h5>Category: {category.label}</h5>
+                <div>Text: {text.body}</div>
+                <div>Recording: {voice.recording}</div>
                 <div>Recorded By: {users.first_name} {users.last_name} </div>
                 {verifyCreator(birdieId) ? <button className="editVoice" onClick={() => props.history.push(`/voices/edit/${voice.id}`)}>Edit Voice</button> : ""}
             </section >

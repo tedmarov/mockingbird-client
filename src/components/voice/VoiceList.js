@@ -47,11 +47,11 @@ export const VoiceList = (props) => {
             {
                 voices.map(voice => {
                     return (<div className="voiceCard" key={voice.id}>
-                        {verifyCreatorPrivacy(birdieId, voice.voice_privacy) ?  "" : < Link
+                        {verifyCreatorPrivacy(birdieId, voice.privacy) ?  "" : < Link
                             to={{
                                 pathname: `/voices/${voice.id}`
                             }} >
-                            <h3>{voice.voice_name}</h3>
+                            <h3>{voice.name}</h3>
                         </Link> }
                     </div>
                     )

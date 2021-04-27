@@ -44,16 +44,16 @@ export const VoiceProvider = (props) => {
         .then(res => res.json())
     }
 
-    const addVoice = voice => {
+    const addVoice = newVoice => {
         return fetch("http://localhost:8000/voices", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Token ${birdie}`
+                "Authorization": `Token ${localStorage.getItem("birdie")}`
             },
-            body: JSON.stringify(voice)
+            body: JSON.stringify(newVoice)
         })
-            .then(voice)
+            .then(newVoice)
     }
 
     const updateVoice = voice => {

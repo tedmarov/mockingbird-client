@@ -4,6 +4,7 @@ import { ApplicationViews } from "./ApplicationViews"
 import { NavBar } from "./nav/NavBar.js"
 import { Login } from "./auth/Login.js"
 import { Register } from "./auth/Register.js"
+import "./Mockingbird.css"
 
 // Need a login screen/register screen CS
 
