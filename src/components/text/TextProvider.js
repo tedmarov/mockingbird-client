@@ -53,8 +53,8 @@ export const TextProvider = (props) => {
 
     /*
         You return a context provider which has the
-        `dTexts` state, the `adddText` function,
-        and the `getdText` function as keys. This
+        `texts` state, the `addText` function,
+        and the `getText` function as keys. This
         allows any child elements to access them.
     */
     return (

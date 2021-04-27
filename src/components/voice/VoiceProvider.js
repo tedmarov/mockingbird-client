@@ -80,7 +80,7 @@ export const VoiceProvider = (props) => {
 
     /*
         You return a context provider which has the
-        `Voices` state, the `adddVoice` function,
+        `voices` state, the `addVoice` function,
         and the `getdVoice` function as keys. This
         allows any child elements to access them.
     */

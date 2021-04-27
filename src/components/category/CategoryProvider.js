@@ -58,8 +58,8 @@ export const CategoryProvider = props => {
 
     /*
         You return a context provider which has the
-        `Categories` state, the `addCategorie` function,
-        and the `getCategorie` function as keys. This
+        `categories` state, the `addCategory` function,
+        and the `getCategory` function as keys. This
         allows any child elements to access them.
     */
     return (

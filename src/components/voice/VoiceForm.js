@@ -24,6 +24,11 @@ export const VoiceForm = (props) => {
     
     const titleDialog = React.createRef()
     
+    /*
+        What's the effect this is reponding to? Component was
+        "mounted" to the DOM. React renders blank HTML first,
+        then gets the data, then re-renders.
+    */
     useEffect(() => {
         getCategories()
         getTexts()
@@ -209,44 +214,3 @@ export const VoiceForm = (props) => {
     )
     
 }
-
-// const handleCheckedInputChange = (e) => {
-    //     const changedPrivacy = Object.assign({}, voice)
-    //     changedPrivacy[e.target.name] = Boolean(e.target.checked)
-    //     setVoice(changedPrivacy)
-    // }
-    
-    // const [name, setName] = useState()
-    // const [recording, setRecording] = useState()
-    // const [category, setCategory] = useState()
-    // const [text, setText] = useState()    
-    // const [currentVoice, setCurrentVoice] = useState({
-    //     category_id: 0,
-    //     text_id: 0,
-    //     name: "",
-    //     create_date: "",
-    //     recording: "",
-    //     edited: false,
-    //     privacy: false
-    // })    
-
-// useEffect(() => {
-//     if (props.match.params.voiceId) {
-//         getVoiceById(props.match.params.voiceId).then(voice => {
-//             setCurrentVoice({
-//                 category_id: voice.category.id,
-//                 text_id: voice.text.id,
-//                 name: voice.name,
-//                 create_date: voice.create_date,
-//                 recording: voice.recording,
-//                 edited: false,
-//                 privacy: false
-//             })
-//         })
-//     }
-// }, [props.match.params.voiceId])
-
-
-// const checkboxHandler = () => {
-    //     setChecked(!checked)
-    //     }
