@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 import { Link, useHistory } from "react-router-dom"
-import "./Auth.css"
+import "./Login.css"
 
 
 export const Login = () => {
@@ -37,13 +37,13 @@ export const Login = () => {
     }
 
     return (
-        <main className="container--login">
+        <main className="container--main">
             <dialog className="dialog dialog--auth" ref={invalidDialog}>
                 <div>Email or password was not valid.</div>
                 <button className="button--close" onClick={e => invalidDialog.current.close()}>Close</button>
             </dialog>
             <section>
-                <form className="form--login" onSubmit={handleLogin}>
+                <form className="form--main" onSubmit={handleLogin}>
                     <h1>Mockingbird</h1>
                     <h2>Please sign in</h2>
                     <fieldset>

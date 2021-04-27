@@ -38,11 +38,10 @@ export const TextList = (props) => {
             {
                 texts.map(text => {
                     return (<div className="textCard" key={text.id}>
-                            <h3>{text.text_title}</h3>
-                            <h5>{text.submitter.user.first_name} {text.submitter.user.last_name}</h5>
-                            <div>{text.text_body}</div>
-                            <div>{text.text_source}</div>
-                            <div></div>
+                            <h3>{text.title}</h3>
+                            <h5>Submitter: {text.submitter.user.first_name} {text.submitter.user.last_name}</h5>
+                            <h3>Content: {text.body}</h3>
+                            <h5> Where did they find it? {text.source}</h5>
                     </div>
                     )
                 })}

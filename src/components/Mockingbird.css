@@ -32,7 +32,6 @@ textarea {
 
 input,
 select {
-  width: 85%;
   border-radius: 15px;
   background-color: #eaebed;
 }
