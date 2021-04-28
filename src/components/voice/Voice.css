@@ -13,12 +13,13 @@
   .voiceCard,
   .voiceDetail {
     display: block;
-    border: 1px outset #0080ff;
+    border: 1px outset #03d36b;
     text-align: center;
     margin: 1em;
     padding: 1em;
     flex-basis: 20%;
     width: 225px;
     border-radius: 15px;
+    background-color: hsl(0deg 0% 91% / 40%);
   }
   

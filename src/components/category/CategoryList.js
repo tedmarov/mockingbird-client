@@ -31,13 +31,13 @@ export const CategoryList = (props) => {
 
     return (
         <article className="categoriesWindow">
-
+            <h2>Categories:</h2>
             {
                 categories.map(category => {
                     return (
                     <div className="categoryCard" key={category.id}>
-                            <h2>Category: {category.id}</h2>
-                            <h3>{category.category_label}</h3>
+                            <h2>{category.id}</h2>
+                            <h3>{category.label}</h3>
                     </div>
                     )
                 })}

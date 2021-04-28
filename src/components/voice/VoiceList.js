@@ -11,7 +11,8 @@ export const VoiceList = (props) => {
     /*
         What's the effect this is reponding to? Component was
         "mounted" to the DOM. React renders blank HTML first,
-        then gets the data, then re-renders.
+        then gets the data, then re-renders. The empty bracket is
+        the Dependency Array. It only runs the first time the component renders.
     */
     useEffect(() => {
         console.log("VoiceList: Initial render before data")
@@ -32,19 +33,11 @@ export const VoiceList = (props) => {
         return Boolean(false);
     }
 
-    /*
-        This effect is solely for learning purposes. The effect
-        it is responding to is that the Voice state changed.
-    */
-    // useEffect(() => {
-    //     console.log("VoiceList: Voice state changed")
-    //     console.log(Voices)
-    // }, [Voices])
-
     return (
         <article className="voicesWindow">
 
             {
+                // Iterate the array of voices with .map()
                 voices.map(voice => {
                     return (<div className="voiceCard" key={voice.id}>
                         {verifyCreatorPrivacy(birdieId, voice.privacy) ?  "" : < Link

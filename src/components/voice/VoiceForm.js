@@ -15,7 +15,6 @@ import { TextContext } from "../text/TextProvider.js"
 // Want to import User, Auth components here.
 // import { ProfileProvider } from './auth/AuthProvider.js'
 
-
 export const VoiceForm = (props) => {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const { categories, getCategories } = useContext(CategoryContext)
@@ -24,6 +23,11 @@ export const VoiceForm = (props) => {
     
     const titleDialog = React.createRef()
     
+    /*
+        What's the effect this is reponding to? Component was
+        "mounted" to the DOM. React renders blank HTML first,
+        then gets the data, then re-renders.
+    */
     useEffect(() => {
         getCategories()
         getTexts()
@@ -36,7 +40,6 @@ export const VoiceForm = (props) => {
     
     // Component state
     // Sets the state of the empty values for a Voice
-    // const [checked, setChecked] = useState(false)
     const [voice, setVoice] = useState({})
     const [checked, setChecked] = useState(false)
     
@@ -67,24 +70,30 @@ export const VoiceForm = (props) => {
         }
     }   
         
-    // Object.assign creates a copy; e.target.value modifies a copy
-    /* When changing a state object or array, always create a new one
-    and change state instead of modifying current one */    
+    /* 
+        Object.assign creates a copy; e.target.value modifies a copy.
+        When changing a state object or array, always create a new one
+        and change state instead of modifying current one. 
+        When a field changes, update the state.
+    */    
     const handleControlledInputChange = (e) => {
         const newVoice = Object.assign({}, voice)
         newVoice[e.target.name] = e.target.value
         setVoice(newVoice)
     }
     
-    // changes the value of the checkbox
+    // Changes the value of the checkbox
     const checkboxHandler = () => {
         setChecked(!checked)
     }
 
-    console.log(categories)
-    console.log(texts)
-    
-    
+    /* 
+        Check if the IDs are 0/Not selected. If they are, give a window pop-up asking the user to select an item for both.
+        Or else if there are chosen IDs for Category and Text, proceed on to updating or creating an object.
+        If there is a URL paramater, retrieve data from existing object.
+        Or else if there is at least a name entered into the voice object, add the object.
+        Otherwise give them a dialog pop-up box.
+    */
     const constructNewVoice = () => {
         if ( voice.category_id === 0 || voice.text_id === 0 ) {
             window.alert("Please select a category.")
@@ -117,135 +126,98 @@ export const VoiceForm = (props) => {
             }
         }}
         
-        return (
-            <main className="container--main">
-
-        <dialog className="dialog dialog--password" ref={titleDialog}>
-            <div>Please enter a voice name.</div>
-            <button className="button--close" onClick={e => titleDialog.current.close()}>Close</button>
-        </dialog>
-            <fieldset>
-                <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
-            </fieldset>
-            <form className="form--main">
+    return (
+        <main className="container--main">
+            <section>
+            <dialog className="dialog dialog--password" ref={titleDialog}>
+                {/* This pops up if there is no voice name entered. */}
+                <div>Please enter a voice name.</div>
+                <button className="button--close" onClick={e => titleDialog.current.close()}>Close</button>
+            </dialog>
                 <fieldset>
-                    <label htmlFor="name">Voice Name: </label>
-                    <input type="text" name="name" className="form-control" placeholder="Voice Name" defaultValue={voice.name} onChange={handleControlledInputChange} />
+                    {/* This renders depending on if the voice object already exists or needs to be created. */}
+                    <h2>{editMode ? "Update Voice" : "New Voice"}</h2>
                 </fieldset>
-                <fieldset>
-                    <div className="form-group">
-                        <label htmlFor="recording">Recording: </label>
-                        <textarea type="text" name="recording" rows="15" className="form-control"
-                            placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
-                            defaultValue={voice.recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
-                            onChange={handleControlledInputChange}
-                            />
+                <form className="form--main">
+                    <fieldset>
+                        <label htmlFor="name">Voice Name: </label>
+                        <input type="text" name="name" className="form-control" placeholder="Voice Name" defaultValue={voice.name} onChange={handleControlledInputChange} />
+                    </fieldset>
+                    <fieldset>
+                        <div className="form-group">
+                            <label htmlFor="recording">Recording: </label>
+                            <textarea type="text" name="recording" rows="15" className="form-control"
+                                placeholder="Ready to record? Click the microphone icon. Want to stop? Click the black stop button. Need to start from scratch? Click the circle arrow to reset the transcript."
+                                defaultValue={voice.recording || transcript.charAt(0).toUpperCase() + transcript.slice(1)}
+                                onChange={handleControlledInputChange}
+                                />
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div className="d-flex justify-content-center speech-recog">
+                            <FontAwesomeIcon className="start-recording" onClick={startListening} icon={faMicrophoneAlt} />
+                            <FontAwesomeIcon className="stop-recording" onClick={SpeechRecognition.stopListening} icon={faStopCircle} />
+                            <FontAwesomeIcon className="reset-recording" onClick={resetTranscript} icon={faRedo} />
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <label htmlFor="create_date">Voice Date: </label>
+                        <input type="date" name="create_date" className="form-control" placeholder="Date Voice Created" defaultValue={voice.create_date} onChange={handleControlledInputChange} />
+                    </fieldset>
+                    <fieldset>
+                        <label htmlFor="category_id"> Voice Category </label>
+                        <select name="category_id" className="form-control" defaultValue={voice.category_id} onChange={handleControlledInputChange}>
+                            <option>Select Category</option>
+                            {categories.map(c => (
+                                <option key={c.id} value={c.id} >
+                                    {c.label}  
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <label htmlFor="text_id"> Voice Text </label>
+                        <select name="text_id" className="form-control" defaultValue={voice.text_id} onChange={handleControlledInputChange}>
+                            <option> Select Text</option>
+                            {texts.map(t => (
+                                <option key={t.id} value={t.id} >
+                                    {t.title}
+                                </option>
+                            ))}
+                            </select>
+                    </fieldset>
+                    <fieldset>
+                        <div>                
+                        <label>
+                            {/* Just a basic checkbox with a boolean value that can be private or public. */}
+                            <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
+                                Please select if you would like privacy for your voice.
+                        </label>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <div className="d-flex justify-content-center speech-recog">
-                        <FontAwesomeIcon className="start-recording" onClick={startListening} icon={faMicrophoneAlt} />
-                        <FontAwesomeIcon className="stop-recording" onClick={SpeechRecognition.stopListening} icon={faStopCircle} />
-                        <FontAwesomeIcon className="reset-recording" onClick={resetTranscript} icon={faRedo} />
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="create_date">Voice Date: </label>
-                    <input type="date" name="create_date" className="form-control" placeholder="Date Voice Created" defaultValue={voice.create_date} onChange={handleControlledInputChange} />
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="category_id"> Voice Category </label>
-                    <select name="category_id" className="form-control" defaultValue={voice.category_id} onChange={handleControlledInputChange}>
-                        <option>Select Category</option>
-                        {categories.map(c => (
-                            <option key={c.id} value={c.id} >
-                                {c.label}  
-                            </option>
-                        ))}
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="text_id"> Voice Text </label>
-                    <select name="text_id" className="form-control" defaultValue={voice.text_id} onChange={handleControlledInputChange}>
-                        <option> Select Text</option>
-                        {texts.map(t => (
-                            <option key={t.id} value={t.id} >
-                                {t.title}
-                            </option>
-                        ))}
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <div>                
-                    <label>
-                        <input type="checkbox" id="private-checkbox" value={checked} checked={checked} onChange={checkboxHandler}></input>
-                            Please select if you would like privacy for your voice.
-                    </label>
+                    </fieldset>
+                </form>
+                <div className="text-center">
+                        <button type="submit"
+                            onClick={event => {
+                                event.preventDefault() // Prevent browser from submitting the form empty
+                                console.log(voice)
+                                constructNewVoice()
+                            }}>
+                            {editMode ? "Update Voice" : "Create Voice"}
+                        </button>
+                    {editMode &&
+                        <button
+                        onClick={() => {
+                            deleteVoice(voice.id)
+                            .then(() => {
+                                props.history.push("/voices")
+                            })
+                        }}>Delete Voice</button>
+                    }
                 </div>
-                </fieldset>
-            </form>
-            <div className="text-center">
-                    <button type="submit"
-                        onClick={event => {
-                            event.preventDefault() // Prevent browser from submitting the form
-                            console.log(voice)
-                            constructNewVoice()
-                        }}>
-                        {editMode ? "Update Voice" : "Create Voice"}
-                    </button>
-                {editMode &&
-                    <button
-                    onClick={() => {
-                        deleteVoice(voice.id)
-                        .then(() => {
-                            props.history.push("/voices")
-                        })
-                    }}>Delete Voice</button>
-                }
-            </div>
-    </main>
+            </section>
+        </main>
     
     )
     
 }
-
-// const handleCheckedInputChange = (e) => {
-    //     const changedPrivacy = Object.assign({}, voice)
-    //     changedPrivacy[e.target.name] = Boolean(e.target.checked)
-    //     setVoice(changedPrivacy)
-    // }
-    
-// const [name, setName] = useState()
-// const [recording, setRecording] = useState()
-// const [category, setCategory] = useState()
-// const [text, setText] = useState()    
-// const [currentVoice, setCurrentVoice] = useState({
-    //     category_id: 0,
-    //     text_id: 0,
-    //     name: "",
-    //     create_date: "",
-    //     recording: "",
-    //     edited: false,
-    //     privacy: false
-    // })    
-
-// useEffect(() => {
-//     if (props.match.params.voiceId) {
-//         getVoiceById(props.match.params.voiceId).then(voice => {
-//             setCurrentVoice({
-//                 category_id: voice.category.id,
-//                 text_id: voice.text.id,
-//                 name: voice.name,
-//                 create_date: voice.create_date,
-//                 recording: voice.recording,
-//                 edited: false,
-//                 privacy: false
-//             })
-//         })
-//     }
-// }, [props.match.params.voiceId])
-
-
-// const checkboxHandler = () => {
-    //     setChecked(!checked)
-    //     }

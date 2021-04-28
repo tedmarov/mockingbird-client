@@ -6,6 +6,7 @@ import './index.css'
 
 ReactDOM.render(
     <React.StrictMode>
+        {/* I will be placing Routes in my Mockingbird component. */}
         <Router>
             <Mockingbird />
         </Router>
