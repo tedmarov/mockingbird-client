@@ -184,7 +184,7 @@ export const VoiceForm = (props) => {
                                     {t.title}
                                 </option>
                             ))}
-                        </select>
+                            </select>
                     </fieldset>
                     <fieldset>
                         <div>                
